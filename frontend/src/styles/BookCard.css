@@ -1,0 +1,32 @@
+.book-card {
+  position: relative;
+  width: 140px;
+  flex: 0 0 auto;
+  transition: transform 0.3s ease;
+  cursor: pointer;
+}
+
+.book-card:hover {
+  transform: scale(1.08);
+}
+
+.book-cover {
+  width: 100%;
+  border-radius: 4px;
+}
+
+.book-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 0.3rem;
+  font-size: 0.75rem;
+  display: none;
+}
+
+.book-card:hover .book-overlay {
+  display: block;
+}

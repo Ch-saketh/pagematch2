@@ -1,0 +1,144 @@
+/* General page setup */
+.login-page {
+  height: 100vh;
+  width: 100%;
+  background: url("https://images.pexels.com/photos/10957572/pexels-photo-10957572.jpeg") no-repeat center center/cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  overflow: hidden;
+}
+
+
+/* Dark overlay like Netflix */
+.login-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.8), rgba(0,0,0,0.2));
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 30px 40px;
+}
+
+/* Header layout */
+.login-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Logo styling */
+.logo {
+  font-size: 2.2rem;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.6); /* translucent dark */
+  padding: 4px 10px;
+  border-radius: 4px;
+}
+
+
+.logo-light {
+  color: #00bfff; /* light blue */
+}
+
+.logo-bold {
+  color: #e50914; /* Netflix red */
+  margin-left: 3px;
+}
+
+/* Sign-in button */
+.signin-button {
+  background-color: #e50914;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* Center content */
+.login-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+  text-align: center;
+  margin-top: 50px;
+   padding: 20px 0;
+  flex: none;
+  margin-top: 0;
+}
+
+/* Text styles */
+.main-title {
+  font-size: 2.8rem;
+  font-weight: 800;
+  color: white;
+  margin-bottom: 20px;
+}
+
+.sub-title {
+  font-size: 1.4rem;
+  color: white;
+  margin-bottom: 10px;
+}
+
+.description {
+  color: white;
+  font-size: 1rem;
+  margin-bottom: 30px;
+}
+
+/* Form styles */
+.login-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.email-input {
+  width: 280px; /* reduced from 350px */
+  padding: 12px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 4px;
+  outline: none;
+}
+
+.get-started-button {
+  background-color: #e50914;
+  color: white;
+  padding: 15px 40px;
+  font-size: 1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.get-started-button:hover {
+  background-color: #f40612;
+}
+@media screen and (max-width: 600px) {
+  .main-title {
+    font-size: 1.8rem;
+  }
+
+  .sub-title, .description {
+    font-size: 1rem;
+  }
+
+  .email-input {
+    width: 90%;
+  }
+}

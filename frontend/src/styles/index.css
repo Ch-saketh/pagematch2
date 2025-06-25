@@ -1,0 +1,52 @@
+/* src/index.css */
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #000;
+  color: white;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+body {
+  overflow-x: hidden;  /* Prevents horizontal scrolling */
+}
+
+.book-row::-webkit-scrollbar {
+  height: 0px; /* Hide scrollbar */
+}
+.book-row {
+  white-space: nowrap;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  scroll-behavior: smooth;
+  padding: 10px 0;
+}
+/* Hide horizontal scrollbar globally */
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+body {
+  margin: 0;
+  overflow-x: hidden;
+  font-family: Arial, sans-serif;
+}
+
+::-webkit-scrollbar {
+  display: none; /* Chrome, Safari */
+}
+
+html {
+  scrollbar-width: none; /* Firefox */
+}

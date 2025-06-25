@@ -1,0 +1,54 @@
+/* src/styles/Search.css */
+
+.search-page {
+  background-color: #000;
+  min-height: 100vh;
+  color: white;
+  padding: 2rem;
+  font-family: 'Helvetica Neue', sans-serif;
+}
+
+.search-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.search-input {
+  width: 60%;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: none;
+  outline: none;
+  max-width: 500px;
+}
+
+.search-results {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 1.5rem;
+  padding-top: 1rem;
+}
+
+.search-card {
+  position: relative;
+  background-color: #111;
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.search-card:hover {
+  transform: scale(1.05);
+}
+
+.search-cover {
+  width: 100%;
+  display: block;
+}
+
+.search-info {
+  padding: 0.5rem;
+  font-size: 0.85rem;
+}

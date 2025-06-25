@@ -1,0 +1,39 @@
+.row {
+  margin-left: 30px;
+  color: white;
+}
+
+.row h2 {
+  margin-left: 10px;
+}
+
+.row-posters {
+  display: flex;
+  overflow-y: hidden;
+  overflow-x: scroll;
+  padding: 20px 0;
+}
+
+.row-poster {
+  object-fit: contain;
+  width: 150px;
+  height: 220px;
+  margin-right: 10px;
+  transition: transform 0.3s;
+  border-radius: 5px;
+}
+
+.row-poster:hover {
+  transform: scale(1.08);
+  cursor: pointer;
+}
+.book-row {
+  overflow-x: auto;
+  white-space: nowrap;
+  padding-bottom: 10px;
+  scrollbar-width: none; /* Firefox */
+}
+
+.book-row::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Edge */
+}

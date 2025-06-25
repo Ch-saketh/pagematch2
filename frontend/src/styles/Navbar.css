@@ -1,0 +1,86 @@
+/* src/styles/Navbar.css */
+
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 999;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 30px;
+  background: transparent !important;
+  box-shadow: none;
+  transition: all 0.3s ease-in-out;
+}
+
+/* Logo styles */
+.logo {
+  font-size: 1.8rem;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+}
+
+.logo-light {
+  color: #00bfff;
+}
+
+.logo-bold {
+  color: #ff2e2e;
+}
+
+/* Sign-out button */
+.signin-button {
+  background-color: #e50914;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  font-weight: bold;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+.profile-icon {
+  font-size: 24px;
+  cursor: pointer;
+  color: white;
+  transition: transform 0.2s ease;
+}
+
+.profile-icon:hover {
+  transform: scale(1.1);
+}
+
+.signin-button:hover {
+  background-color: #b40610;
+}
+.profile-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.profile-icon:hover {
+  transform: scale(1.05);
+}
+.navbar-icons {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.navbar-icon {
+  width: 28px;
+  height: 28px;
+  cursor: pointer;
+  filter: brightness(100%);
+  transition: transform 0.2s ease;
+}
+
+.navbar-icon:hover {
+  transform: scale(1.1);
+}

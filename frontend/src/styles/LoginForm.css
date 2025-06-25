@@ -1,0 +1,68 @@
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.login-input {
+  padding: 0.75rem;
+  background: #333;
+  border: none;
+  color: white;
+  font-size: 1rem;
+  border-radius: 4px;
+}
+
+.login-button {
+  padding: 0.75rem;
+  background-color: #e50914;
+  border: none;
+  font-weight: bold;
+  color: white;
+  font-size: 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.login-button:hover {
+  background-color: #f6121d;
+}
+
+.login-text {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  color: #aaa;
+}
+
+.signup-link {
+  color: white;
+  cursor: pointer;
+}
+.email-input {
+  padding: 1rem;
+  font-size: 1rem;
+  border: none;
+  outline: none;
+  width: 100%;
+  border-radius: 4px 0 0 4px;
+}
+
+.get-started-button {
+  background-color: red;
+  color: white;
+  border: none;
+  font-weight: bold;
+  font-size: 1rem;
+  padding: 1rem 2rem;
+  border-radius: 0 4px 4px 0;
+  cursor: pointer;
+}
+
+.login-form {
+  display: flex;
+  justify-content: center;
+  max-width: 700px;
+  width: 100%;
+  margin: 0 auto;
+  margin-top: 20px;
+}

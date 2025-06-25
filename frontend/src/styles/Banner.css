@@ -1,0 +1,59 @@
+.banner {
+  color: white;
+  object-fit: contain;
+  height: 440px;
+  background-size: cover;
+  background-image: url("https://images.unsplash.com/photo-1512820790803-83ca734da794");
+  background-position: center center;
+  position: relative;
+  padding-top: 0; /* or 20px max */
+  margin-top: 0;
+}
+
+
+.banner-contents {
+  padding: 100px 40px 20px;
+}
+
+.banner-title {
+  font-size: 3rem;
+  font-weight: 800;
+  margin-bottom: 10px;
+}
+
+.banner-desc {
+  width: 45%;
+  line-height: 1.4;
+  font-size: 1rem;
+  max-width: 360px;
+  margin-bottom: 20px;
+}
+
+.banner-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.banner-btn {
+  cursor: pointer;
+  color: white;
+  outline: none;
+  border: none;
+  font-weight: 700;
+  border-radius: 4px;
+  padding: 10px 25px;
+  background-color: rgba(51, 51, 51, 0.5);
+}
+
+.banner-btn:hover {
+  background-color: white;
+  color: black;
+}
+
+.banner-fadeBottom {
+  position: absolute;
+  bottom: 0;
+  height: 7.4rem;
+  width: 100%;
+  background-image: linear-gradient(180deg, transparent, rgba(37, 37, 37, 0.61), #111);
+}

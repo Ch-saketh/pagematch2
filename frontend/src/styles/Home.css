@@ -1,0 +1,49 @@
+/* Navbar styling */
+.navbar {
+  display: flex;
+  height: 60px;
+  justify-content: space-between;
+  padding: 0 30px;
+  background-color: #111;
+  color: white;
+  display: flex;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.logo {
+  font-size: 1.8rem;
+  font-weight: bold;
+}
+
+.logo-light {
+  color: #00bfff;
+}
+
+.logo-bold {
+  color: #e50914;
+}
+
+.signout-btn {
+  background-color: #e50914;
+  color: white;
+  padding: 8px 20px;
+  font-weight: bold;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.homepage {
+ 
+   /* Adjust based on your navbar height */
+  padding: 20px;
+  background-color: #000; /* Optional: for dark Netflix-style */
+  min-height: 100vh;
+  color: white;
+}
+.home-content {
+  margin-top: 70px; /* Adjust based on your navbar height */
+}
+
