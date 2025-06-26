@@ -1,0 +1,314 @@
+.profile-selection-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: #141414;
+  color: white;
+  padding: 20px;
+  text-align: center;
+}
+
+.delete-profile-btn {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  background: #e50914;
+  border: none;
+  border-radius: 50%;
+  width: 25px;
+  height: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.profile-selection-container h1 {
+  font-size: 3.5vw;
+  margin-bottom: 50px;
+}
+
+.profile-card:hover .settings-btn {
+  opacity: 1;
+}
+.settings-btn:hover {
+  background: rgba(0, 0, 0, 0.9);
+  transform: scale(1.1);
+}
+
+
+.profile-name-container {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.edit-name-btn {
+  background: none;
+  border: none;
+  color: grey;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+.edit-name-btn:hover {
+  color: white;
+}
+.profiles-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 30px;
+  margin-bottom: 50px;
+}
+
+.profile-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+
+
+.name-edit-container {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 10px;
+}
+
+.name-edit-container input {
+  background: #333;
+  border: 1px solid #666;
+  color: white;
+  padding: 5px;
+  border-radius: 3px;
+  max-width: 100px;
+}
+
+.save-edit-btn {
+  background: #e50914;
+  border: none;
+  border-radius: 3px;
+  color: white;
+  padding: 5px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.editor-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.profile-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.profile-card:hover {
+  transform: scale(1.05);
+}
+
+.close-editor-btn {
+  background: none;
+  border: none;
+  color: grey;
+  cursor: pointer;
+  font-size: 1.5rem;
+}
+.close-editor-btn:hover {
+  color: white;
+}
+svg {
+  vertical-align: middle;
+}
+.profile-card img {
+  width: 120px;
+  height: 120px;
+  border-radius: 4px;
+  border: 2px solid transparent;
+  object-fit: cover;
+  transition: border-color 0.3s;
+}
+
+.profile-card:hover img {
+  border-color: white;
+}
+
+
+.profile-card span {
+  margin-top: 12px;
+  font-size: 1.2vw;
+  color: grey;
+}
+
+.profile-card:hover span {
+  color: white;
+}
+
+.add-profile {
+  color: grey;
+}
+
+.add-icon {
+  width: 120px;
+  height: 120px;
+  background-color: #2a2a2a;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 72px;
+  color: grey;
+}
+
+.add-profile:hover .add-icon {
+  background-color: #3a3a3a;
+  color: white;
+}
+
+.profile-editor {
+  background-color: #2a2a2a;
+  padding: 30px;
+  border-radius: 8px;
+  max-width: 600px;
+  margin: 0 auto 30px;
+}
+
+.avatar-selection h3, .name-input {
+  margin-bottom: 20px;
+}
+
+.avatar-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.avatar-grid img {
+  width: 80px;
+  height: 80px;
+  border-radius: 4px;
+  cursor: pointer;
+  object-fit: cover;
+}
+
+.avatar-grid img.selected {
+  border: 3px solid #e50914;
+}
+
+.name-input input {
+  width: 100%;
+  padding: 12px;
+  background-color: #666;
+  border: none;
+  border-radius: 4px;
+  color: white;
+  font-size: 16px;
+}
+
+.name-input input::placeholder {
+  color: #ccc;
+}
+
+.editor-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+}
+
+.editor-buttons button {
+  padding: 8px 20px;
+  border: none;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.cancel-btn {
+  background-color: transparent;
+  color: grey;
+}
+
+.cancel-btn:hover {
+  color: white;
+}
+
+.save-btn {
+  background-color: white;
+  color: black;
+}
+
+.save-btn:hover {
+  background-color: #e50914;
+  color: white;
+}
+
+.save-btn:disabled {
+  background-color: grey;
+  cursor: not-allowed;
+}
+
+.manage-profiles-btn {
+  background-color: transparent;
+  border: 1px solid grey;
+  color: grey;
+  padding: 8px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 50px;
+}
+
+.manage-profiles-btn:hover {
+  border-color: white;
+  color: white;
+}
+.profile-image-container {
+  position: relative;
+  display: inline-block;
+}
+.settings-btn {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  background: rgba(248, 242, 242, 0.858);
+  border: none;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  cursor: pointer;
+  opacity: 0;
+  transition: all 0.3s ease;
+  z-index: 2;
+}
+profile-card:hover .settings-btn {
+  opacity: 1;
+}
+
+.settings-btn:hover {
+  background: rgba(0, 0, 0, 0.9);
+  transform: scale(1.1);
+}
+
+.settings-btn svg {
+  width: 16px;
+  height: 16px;
+}

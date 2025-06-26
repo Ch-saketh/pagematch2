@@ -1,49 +1,123 @@
-/* Navbar styling */
-.navbar {
-  display: flex;
-  height: 60px;
-  justify-content: space-between;
-  padding: 0 30px;
-  background-color: #111;
+/* Home.css */
+.page-container {
+  position: relative;
+  background-color: #141414;
   color: white;
+  min-height: 100vh;
+}
+.banner {
+  position: relative;
+  z-index: 1;
+  margin-top: -80px; /* Pulls banner up slightly under navbar */
+  padding-top: 80px; /* Ensures content starts below navbar */
+}
+.main-content {
+  margin-top: 80px; /* Must match navbar height */
+}
+.main-content {
+  margin-top: 80px; /* Must match navbar height */
+}
+
+.content-section {
+  padding: 2rem 4rem;
+  position: relative;
+  z-index: 2;
+}
+
+.section-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+  padding: 10px 0;
+}
+
+.content-card {
+  position: relative;
+  transition: transform 0.3s ease;
+}
+
+.content-card:hover {
+  transform: translateY(-10px);
+    transform: scale(1.05);
+}
+
+.card-image {
+  height: 0;
+  padding-bottom: 150%;
+  background-size: cover;
+  background-position: center;
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
+
+.card-title {
+  font-size: 1rem;
+  font-weight: 500;
+  margin-top: 0.5rem;
+}
+
+.content-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
   display: flex;
   align-items: center;
-  position: sticky;
-  top: 0;
-  z-index: 100;
+  justify-content: center;
+  font-weight: 700;
+  z-index: 3;
 }
 
-.logo {
-  font-size: 1.8rem;
-  font-weight: bold;
+.content-badge.manga {
+  background: #e50914;
 }
 
-.logo-light {
-  color: #00bfff;
+.content-badge.new {
+  background: #46d369;
 }
 
-.logo-bold {
-  color: #e50914;
+.content-badge.classic {
+  background: #1e90ff;
 }
 
-.signout-btn {
-  background-color: #e50914;
-  color: white;
-  padding: 8px 20px;
-  font-weight: bold;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-.homepage {
- 
-   /* Adjust based on your navbar height */
-  padding: 20px;
-  background-color: #000; /* Optional: for dark Netflix-style */
-  min-height: 100vh;
-  color: white;
-}
-.home-content {
-  margin-top: 70px; /* Adjust based on your navbar height */
+.content-badge.hot {
+  background: #ff8c00;
 }
 
+.progress-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 4px;
+  background: #e50914;
+  border-radius: 0 0 4px 4px;
+  z-index: 3;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .main-content {
+    margin-top: 60px;
+  }
+  
+  .banner {
+    margin-top: -60px;
+    padding-top: 60px;
+  }
+  
+  .content-section {
+    padding: 1.5rem;
+  }
+  
+  .card-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+}

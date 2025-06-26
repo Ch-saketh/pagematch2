@@ -1,5 +1,3 @@
-// src/pages/Login.jsx
-
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { auth, db } from "../firebase";
@@ -8,11 +6,7 @@ import {
   sendEmailVerification,
   signInWithEmailAndPassword,
 } from "firebase/auth";
-import {
-  doc,
-  setDoc,
-  serverTimestamp,
-} from "firebase/firestore";
+import { doc, setDoc, serverTimestamp } from "firebase/firestore";
 import "../styles/Login.css";
 
 const Login = () => {
@@ -20,46 +14,53 @@ const Login = () => {
   const [isNewUser, setIsNewUser] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [name, setName] = useState(""); // For new users only
+  const [name, setName] = useState("");
   const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
+    setError('');
+    setIsLoading(true);
 
     try {
       if (isNewUser) {
-        // Sign up flow
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-        const user = userCredential.user;
-
-        await sendEmailVerification(user);
-        alert("Verification email sent. Please verify before logging in.");
-
-        await setDoc(doc(db, "users", user.uid), {
+        await sendEmailVerification(userCredential.user);
+        alert('Verification email sent. Please verify before logging in.');
+        
+        await setDoc(doc(db, "users", userCredential.user.uid), {
           name,
           email,
           joinedAt: serverTimestamp(),
         });
-
-        setIsNewUser(false); // Switch to login
+        
+        setIsNewUser(false);
       } else {
-        // Sign in flow
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
-        const user = userCredential.user;
-
-        if (!user.emailVerified) {
-          alert("Please verify your email before logging in.");
+        await userCredential.user.reload();
+        const updatedUser = auth.currentUser;
+        
+        if (!updatedUser.emailVerified) {
+          await sendEmailVerification(updatedUser);
+          alert('Please verify your email first. New verification email sent.');
+          await auth.signOut();
           return;
         }
-
-        localStorage.setItem("userEmail", user.email);
-        localStorage.setItem("userUID", user.uid);
-        navigate("/home");
+        
+        navigate('/home', { replace: true });
       }
     } catch (err) {
-      console.error(err);
-      setError(err.message);
+      const errorMap = {
+        'auth/invalid-email': 'Please enter a valid email address',
+        'auth/user-not-found': 'Email not found',
+        'auth/wrong-password': 'Incorrect password',
+        'auth/email-already-in-use': 'Email already in use',
+        'auth/too-many-requests': 'Too many attempts. Please try again later.'
+      };
+      setError(errorMap[err.code] || 'Login failed. Please try again.');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -68,59 +69,99 @@ const Login = () => {
       <div className="login-overlay">
         <div className="login-header">
           <div className="logo">
-            <span className="logo-light">Page</span>
-            <span className="logo-bold">Match</span>
+            <span className="logo-text">PAGEMATCH</span>
           </div>
         </div>
 
         <div className="login-content">
-          <h1 className="main-title">Unlimited Books, Reviews and More</h1>
-          <h2 className="sub-title">Read anywhere. Cancel anytime.</h2>
-          <p className="description">Enter your credentials to continue.</p>
+          <div className="login-card">
+            <h1 className="login-title">{isNewUser ? "Create Account" : "Sign In"}</h1>
+            <p className="login-subtitle">
+              {isNewUser ? "Start your reading journey" : "Continue your reading journey"}
+            </p>
+            
+            <form className="login-form" onSubmit={handleSubmit}>
+              {isNewUser && (
+                <div className="input-group">
+                  <label htmlFor="name">Name</label>
+                  <input
+                    id="name"
+                    type="text"
+                    className="login-input"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    required
+                  />
+                </div>
+              )}
+              
+              <div className="input-group">
+                <label htmlFor="email">Email</label>
+                <input
+                  id="email"
+                  type="email"
+                  className="login-input"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                />
+              </div>
+              
+              <div className="input-group">
+                <label htmlFor="password">Password</label>
+                <input
+                  id="password"
+                  type="password"
+                  className="login-input"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
+              </div>
+              
+              {error && <div className="error-message">
+                <svg className="error-icon" viewBox="0 0 24 24">
+                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+                </svg>
+                {error}
+              </div>}
+              
+              <button 
+                type="submit" 
+                className="login-button"
+                disabled={isLoading}
+              >
+                {isLoading ? (
+                  <span className="spinner"></span>
+                ) : (
+                  isNewUser ? "Sign Up" : "Sign In"
+                )}
+              </button>
+            </form>
 
-          <form className="login-form" onSubmit={handleSubmit}>
-            {isNewUser && (
-              <input
-                type="text"
-                placeholder="Full Name"
-                className="email-input"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                required
-              />
-            )}
-            <input
-              type="email"
-              placeholder="Email address"
-              className="email-input"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-            <input
-              type="password"
-              placeholder="Password"
-              className="email-input"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-            <button type="submit" className="get-started-button">
-              {isNewUser ? "Sign Up" : "Sign In"}
-            </button>
-          </form>
+            <div className="login-options">
+              <div className="remember-me">
+                <input type="checkbox" id="remember" />
+                <label htmlFor="remember">Remember me</label>
+              </div>
+              <a href="#" className="need-help">Need help signing in?</a>
+            </div>
 
-          <p className="toggle-auth">
-            {isNewUser ? "Already have an account?" : "New here?"}
-            <span
-              onClick={() => setIsNewUser(!isNewUser)}
-              style={{ color: "#00f", cursor: "pointer", marginLeft: "5px" }}
-            >
-              {isNewUser ? "Sign In" : "Create Account"}
-            </span>
-          </p>
-
-          {error && <p className="error-text">{error}</p>}
+            <div className="login-footer">
+              <p className="auth-toggle">
+                {isNewUser ? "Already have an account? " : "New to PageMatch? "}
+                <button 
+                  className="auth-toggle-button"
+                  onClick={() => setIsNewUser(!isNewUser)}
+                >
+                  {isNewUser ? "Sign in" : "Create an account"}
+                </button>
+              </p>
+              <p className="recaptcha-notice">
+                This page is protected by Google reCAPTCHA to ensure you're not a bot.
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
