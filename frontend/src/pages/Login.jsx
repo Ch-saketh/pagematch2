@@ -48,7 +48,7 @@ const Login = () => {
           return;
         }
         
-        navigate('/home', { replace: true });
+        navigate('/Profile', { replace: true }); // THIS IS THE ONLY CHANGED LINE (originally '/home')
       }
     } catch (err) {
       const errorMap = {

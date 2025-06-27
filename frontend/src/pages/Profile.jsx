@@ -3,7 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { FiSettings, FiX, FiEdit2, FiCheck, FiTrash2 } from 'react-icons/fi';
 import "../styles/ProfileSelection.css";
 
-const ProfileSelection = () => {
+
+const Profile = () => {
   const navigate = useNavigate();
   const [profiles, setProfiles] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
@@ -47,10 +48,11 @@ const ProfileSelection = () => {
   }, []);
 
   const handleProfileSelect = (profileId) => {
-    if (!isManaging) {
-      navigate(`/dashboard/${profileId}`);
-    }
-  };
+  if (!isManaging) {
+    localStorage.setItem('selectedProfile', profileId); // Store selected profile
+    window.location.href = '/home'; // Changed from `/dashboard/${profileId}` to '/home'
+  }
+};
 
   const handleAddProfile = () => {
     if (newProfileName.trim() && selectedPic) {
@@ -244,4 +246,4 @@ const ProfileSelection = () => {
   );
 };
 
-export default ProfileSelection;
+export default Profile;

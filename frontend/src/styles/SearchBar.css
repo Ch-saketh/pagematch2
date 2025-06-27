@@ -1,44 +1,122 @@
-.search-bar {
-  text-align: center;
-  margin-bottom: 2rem;
+.search-page {
+  background-color: #141414;
+  color: white;
+  min-height: 100vh;
+  padding-top: 70px;
 }
 
-.search-bar-input {
-  width: 60%;
-  max-width: 500px;
-  padding: 0.75rem 1rem;
-  font-size: 1rem;
-  border-radius: 8px;
+.search-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px;
+}
+
+.search-content h1 {
+  font-size: 3rem;
+  margin-bottom: 30px;
+}
+
+.search-box {
+  display: flex;
+  margin-bottom: 40px;
+}
+
+.search-box input {
+  flex: 1;
+  padding: 15px;
+  font-size: 16px;
   border: none;
-  outline: none;
-}
-.search-container {
-  position: relative;
-  width: 300px;
-  margin-right: 2rem;
+  border-radius: 4px 0 0 4px;
+  background: rgba(255,255,255,0.1);
+  color: white;
 }
 
-.search-input {
+.search-box button {
+  padding: 15px 25px;
+  background: #e50914;
+  color: white;
+  border: none;
+  border-radius: 0 4px 4px 0;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.search-results h2, .no-results h2, .search-suggestions h2 {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+}
+
+.results-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.result-item {
+  cursor: pointer;
+  transition: transform 0.3s;
+}
+
+.result-item:hover {
+  transform: scale(1.05);
+}
+
+.result-item img {
   width: 100%;
-  padding: 12px 20px 12px 45px;
-  border-radius: 25px;
-  border: none;
-  background: rgba(255,255,255,0.2);
-  color: white;
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
+
+.result-info h3 {
   font-size: 1rem;
-  transition: all 0.3s ease;
+  margin-bottom: 5px;
 }
 
-.search-input:focus {
-  outline: none;
-  background: rgba(255,255,255,0.3);
-  box-shadow: 0 0 10px rgba(229,9,20,0.5);
+.result-info p {
+  color: #b3b3b3;
+  font-size: 0.8rem;
 }
 
-.search-icon {
-  position: absolute;
-  left: 15px;
-  top: 50%;
-  transform: translateY(-50%);
+.no-results {
+  text-align: center;
+  padding: 50px 0;
+}
+
+.search-suggestions {
+  margin-top: 40px;
+}
+
+.suggestions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.suggestion-card {
+  background: rgba(255,255,255,0.1);
+  padding: 20px;
+  border-radius: 4px;
+  transition: all 0.3s;
+}
+
+.suggestion-card:hover {
+  background: rgba(255,255,255,0.2);
+}
+
+.suggestion-card h3 {
+  font-size: 1.2rem;
+  margin-bottom: 15px;
+}
+
+.suggestion-card button {
+  background: transparent;
+  border: 1px solid white;
   color: white;
+  padding: 8px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.suggestion-card button:hover {
+  background: rgba(255,255,255,0.1);
 }

@@ -1,10 +1,21 @@
-import React from "react";
 import { useNavigate } from 'react-router-dom';
+import React, { useEffect } from "react";
 import Navbar from "../components/Navbar";
 import Banner from "../components/Banner";
 import "../styles/Home.css";
 
+
+
 const Home = () => {
+
+  const navigate = useNavigate();
+  
+  // Add this effect to check for selected profile
+  useEffect(() => {
+    if (!localStorage.getItem('selectedProfile')) {
+      navigate('/Profile');
+    }
+  }, [navigate]);
   const trendingContent = [
     { id: 1, title: "Demon Slayer", type: "M", progress: 35, image: "https://wallpapercave.com/wp/wp11053404.jpg" },
     { id: 2, title: "Jujutsu Kaisen", type: "N", progress: 0, image: "https://wallpapers.com/images/hd/gojo-satoru-skyscrapers-jujutsu-kaisen-iphone-2ok7ncrjsl54g5jk.jpg"},
