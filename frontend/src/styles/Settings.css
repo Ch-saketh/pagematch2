@@ -1,0 +1,221 @@
+/* General Layout */
+.settings-page {
+  background: #000;
+  color: #fff;
+  min-height: 100vh;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* Banner Section */
+.settings-banner {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 1rem 2rem;
+  background: linear-gradient(to right, #111, #000);
+  border-bottom: 2px solid #e50914;
+}
+
+.back-button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1rem;
+  margin-right: 1rem;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+.back-button:hover {
+  color: #e50914;
+}
+
+.banner-content {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.banner-avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 2px solid #e50914;
+  object-fit: cover;
+}
+
+.banner-title {
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: #fff;
+}
+
+/* Tabs Section */
+.settings-tabs {
+  display: flex;
+  gap: 2rem;
+  padding: 1rem 2rem;
+  border-bottom: 2px solid #1a1a1a;
+  background: #000;
+}
+
+.settings-tab {
+  background: none;
+  border: none;
+  color: #aaa;
+  font-size: 1rem;
+  padding: 0.5rem 0;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: all 0.3s ease;
+}
+.settings-tab:hover {
+  color: #e50914;
+}
+.settings-tab.active {
+  border-color: #e50914;
+  color: #e50914;
+}
+
+/* Content Section */
+.settings-content {
+  padding: 2rem;
+  animation: fadeIn 0.4s ease;
+}
+
+/* Card Layout */
+.settings-card {
+  background: #111;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 0 15px rgba(255, 0, 0, 0.15);
+  max-width: 700px;
+  margin: 0 auto;
+  transition: all 0.3s ease;
+}
+
+.settings-card h2 {
+  font-size: 1.4rem;
+  color: #fff;
+  margin-bottom: 1rem;
+}
+
+.settings-card label {
+  display: block;
+  margin-top: 1rem;
+  font-weight: bold;
+  color: #ccc;
+}
+
+.settings-card input[type="text"],
+.settings-card select {
+  width: 100%;
+  padding: 0.6rem;
+  margin-top: 0.3rem;
+  border: none;
+  border-radius: 6px;
+  background: #1c1c1c;
+  color: #fff;
+}
+
+.settings-card input[type="checkbox"] {
+  margin-top: 0.8rem;
+}
+
+/* Device List */
+.device-entry {
+  background: #1c1c1c;
+  padding: 1rem;
+  margin-top: 1rem;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #ddd;
+  transition: background 0.3s;
+}
+.device-entry:hover {
+  background: #2a2a2a;
+}
+
+.device-entry button {
+  background: none;
+  border: 1px solid #e50914;
+  color: #e50914;
+  padding: 0.3rem 0.8rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+.device-entry button:hover {
+  background: #e50914;
+  color: #fff;
+}
+
+/* Buttons */
+.settings-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.settings-buttons button {
+  padding: 0.7rem 1.5rem;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.settings-buttons button[type="submit"] {
+  background-color: #e50914;
+  color: white;
+}
+
+.settings-buttons button[type="submit"]:hover {
+  background-color: #b00610;
+}
+
+.settings-buttons button[type="button"] {
+  background-color: #333;
+  color: white;
+}
+
+.settings-buttons button[type="button"]:hover {
+  background-color: #444;
+}
+
+/* Outline buttons */
+.btn-outline {
+  border: 1px solid #e50914;
+  background: transparent;
+  color: #e50914;
+  padding: 0.6rem 1rem;
+  border-radius: 6px;
+  margin-top: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.btn-outline:hover {
+  background: #e50914;
+  color: #fff;
+}
+
+/* Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

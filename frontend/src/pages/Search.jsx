@@ -1,100 +1,62 @@
-import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
-import Navbar from './Navbar';
-import '../styles/SearchBar.css';
+import React, { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 
-const SearchPage = () => {
-  const [scroll, setScroll] = useState(0);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [searchResults, setSearchResults] = useState([]);
-  const location = useLocation();
+const Search = () => {
+  const [searchParams] = useSearchParams();
+  const query = searchParams.get("q") || "";
+  const [results, setResults] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const dummyData = [
+    {
+      id: 1,
+      title: "Harry Potter",
+      genre: "Fantasy",
+      image_url: "https://m.media-amazon.com/images/I/81YOuOGFCJL.jpg",
+    },
+    {
+      id: 2,
+      title: "Percy Jackson",
+      genre: "Adventure",
+      image_url: "https://m.media-amazon.com/images/I/91N3wP1Ww3L.jpg",
+    },
+  ];
 
   useEffect(() => {
-    // Get query from URL if coming from navbar search
-    const params = new URLSearchParams(location.search);
-    const query = params.get('q');
-    if (query) {
-      setSearchQuery(query);
-      performSearch(query);
+  setLoading(true);
+
+  setTimeout(() => {
+    if (query.toLowerCase() === "nothing") {
+      setResults([]);
+    } else {
+      setResults(dummyData);
     }
+    setLoading(false);
+  }, 1000);
+}, [query]);
 
-    const handleScroll = () => {
-      setScroll(window.scrollY);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [location]);
-
-  const performSearch = (query) => {
-    // Mock search results - replace with actual API call
-    const mockResults = [
-      { id: 1, title: 'Stranger Things', type: 'TV Show', image: 'https://via.placeholder.com/300x450', year: 2016 },
-      { id: 2, title: 'The Witcher', type: 'TV Show', image: 'https://via.placeholder.com/300x450', year: 2019 },
-      // Add more mock results
-    ];
-    setSearchResults(mockResults.filter(item => 
-      item.title.toLowerCase().includes(query.toLowerCase())
-    ));
-  };
-
-  const handleSearch = (e) => {
-    e.preventDefault();
-    performSearch(searchQuery);
-  };
 
   return (
-    <div className="search-page">
-      <Navbar scroll={scroll} />
-      
-      <div className="search-content">
-        <h1>Search Page Break</h1>
-        <form onSubmit={handleSearch} className="search-box">
-          <input
-            type="text"
-            placeholder="Search for movies, TV shows..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            autoFocus
-          />
-          <button type="submit">Search</button>
-        </form>
-        
-        {searchResults.length > 0 ? (
-          <div className="search-results">
-            <h2>Results for "{searchQuery}"</h2>
-            <div className="results-grid">
-              {searchResults.map(item => (
-                <div key={item.id} className="result-item">
-                  <img src={item.image} alt={item.title} />
-                  <div className="result-info">
-                    <h3>{item.title}</h3>
-                    <p>{item.type} • {item.year}</p>
-                  </div>
-                </div>
-              ))}
+    <div style={{ backgroundColor: "#000", color: "#fff", minHeight: "100vh", padding: "2rem" }}>
+      <h1 className="text-3xl mb-6">Results for “{query}”</h1>
+
+      {loading ? (
+        <p>Loading...</p>
+      ) : results.length === 0 ? (
+        <p>No results found.</p>
+      ) : (
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))", gap: "1rem" }}>
+          {results.map((book) => (
+            <div key={book.id} style={{ backgroundColor: "#222", padding: "1rem", borderRadius: "8px" }}>
+              <img src={book.image_url} alt={book.title} style={{ width: "100%", height: "250px", objectFit: "cover", borderRadius: "8px" }} />
+              <h2 style={{ marginTop: "1rem", fontSize: "1.1rem" }}>{book.title}</h2>
+              <p style={{ color: "#ccc" }}>{book.genre}</p>
             </div>
-          </div>
-        ) : searchQuery ? (
-          <div className="no-results">
-            <h2>No results found for "{searchQuery}"</h2>
-            <p>Try searching for something else</p>
-          </div>
-        ) : (
-          <div className="search-suggestions">
-            <h2>Popular Searches</h2>
-            <div className="suggestions-grid">
-              {['Action', 'Comedy', 'Horror', 'Romance', 'Sci-Fi', 'Documentaries'].map((genre, index) => (
-                <div key={index} className="suggestion-card">
-                  <h3>{genre}</h3>
-                  <button onClick={() => setSearchQuery(genre)}>Explore</button>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-      </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
 
-export default SearchPage;
+export default Search;

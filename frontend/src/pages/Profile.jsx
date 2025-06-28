@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { FiSettings, FiX, FiEdit2, FiCheck, FiTrash2 } from 'react-icons/fi';
 import "../styles/ProfileSelection.css";
 
-
 const Profile = () => {
   const navigate = useNavigate();
   const [profiles, setProfiles] = useState([]);
@@ -14,7 +13,6 @@ const Profile = () => {
   const [editedName, setEditedName] = useState('');
   const [selectedPic, setSelectedPic] = useState(null);
 
-  // Built-in profile pictures (10 options)
   const profilePics = [
     'https://pngfre.com/wp-content/uploads/1000112715-768x872.png',
     'https://pngfre.com/wp-content/uploads/anime-162-1.png',
@@ -28,31 +26,20 @@ const Profile = () => {
     'https://pngfre.com/wp-content/uploads/anime-33-759x1024.png'
   ];
 
-  // Load profiles from Neo4j (mock for now)
-  const loadProfiles = async () => {
-    try {
-      // In a real app, you would fetch from your backend which connects to Neo4j
-      const mockProfiles = [
-        { id: '1', name: 'User 1', avatar: profilePics[0], settings: {} },
-        { id: '2', name: 'User 2', avatar: profilePics[1], settings: {} }
-      ];
-      setProfiles(mockProfiles);
-    } catch (error) {
-      console.error("Error loading profiles:", error);
-    }
-  };
-
-  // Initialize
   useEffect(() => {
-    loadProfiles();
+    const mockProfiles = [
+      { id: '1', name: 'User 1', avatar: profilePics[0], settings: {} },
+      { id: '2', name: 'User 2', avatar: profilePics[1], settings: {} }
+    ];
+    setProfiles(mockProfiles);
   }, []);
 
   const handleProfileSelect = (profileId) => {
-  if (!isManaging) {
-    localStorage.setItem('selectedProfile', profileId); // Store selected profile
-    window.location.href = '/home'; // Changed from `/dashboard/${profileId}` to '/home'
-  }
-};
+    if (!isManaging) {
+      localStorage.setItem('selectedProfile', profileId);
+      window.location.href = '/home';
+    }
+  };
 
   const handleAddProfile = () => {
     if (newProfileName.trim() && selectedPic) {
@@ -66,7 +53,6 @@ const Profile = () => {
           maturityRating: 'PG-13'
         }
       };
-      
       setProfiles([...profiles, newProfile]);
       setNewProfileName('');
       setSelectedPic(null);
@@ -83,33 +69,39 @@ const Profile = () => {
     setEditedName(profile.name);
   };
 
- const saveEditedName = () => {
-  setProfiles(profiles.map(profile =>  // Changed from setProfiles to setProfiles
-    profile.id === editingProfileId 
-      ? { ...profile, name: editedName } 
-      : profile
-  ));
-  setEditingProfileId(null);
-};
+  const saveEditedName = () => {
+    setProfiles(profiles.map(profile =>
+      profile.id === editingProfileId
+        ? { ...profile, name: editedName }
+        : profile
+    ));
+    setEditingProfileId(null);
+  };
 
   const handleSettingsClick = (profileId, e) => {
     e.stopPropagation();
-    navigate(`/profile-settings/${profileId}`);
+    const profileData = profiles.find(p => p.id === profileId);
+    navigate(`/settings/${profileId}`, {
+      state: {
+        profileId,
+        profileData
+      }
+    });
   };
 
   return (
     <div className="profile-selection-container">
       <h1>Who's using Page Break?</h1>
-      
+
       <div className="profiles-grid">
         {profiles.map(profile => (
-          <div 
-            key={profile.id} 
+          <div
+            key={profile.id}
             className="profile-card"
             onClick={() => !isManaging && handleProfileSelect(profile.id)}
           >
             {isManaging && (
-              <button 
+              <button
                 className="delete-profile-btn"
                 onClick={(e) => {
                   e.stopPropagation();
@@ -119,19 +111,19 @@ const Profile = () => {
                 <FiTrash2 />
               </button>
             )}
-            
-           <div className="profile-image-container">
-  <img src={profile.avatar} alt={profile.name} />
-  {!isManaging && (  // Only show settings button when NOT in management mode
-    <button 
-      className="settings-btn"
-      onClick={(e) => handleSettingsClick(profile.id, e)}
-    >
-      <FiSettings />
-    </button>
-  )}
-</div>
-            
+
+            <div className="profile-image-container">
+              <img src={profile.avatar} alt={profile.name} />
+              {!isManaging && (
+                <button
+                  className="settings-btn"
+                  onClick={(e) => handleSettingsClick(profile.id, e)}
+                >
+                  <FiSettings />
+                </button>
+              )}
+            </div>
+
             {editingProfileId === profile.id ? (
               <div className="name-edit-container">
                 <input
@@ -141,7 +133,7 @@ const Profile = () => {
                   maxLength="20"
                   autoFocus
                 />
-                <button 
+                <button
                   className="save-edit-btn"
                   onClick={(e) => {
                     e.stopPropagation();
@@ -155,7 +147,7 @@ const Profile = () => {
               <div className="profile-name-container">
                 <span>{profile.name}</span>
                 {isManaging && (
-                  <button 
+                  <button
                     className="edit-name-btn"
                     onClick={(e) => {
                       e.stopPropagation();
@@ -169,9 +161,9 @@ const Profile = () => {
             )}
           </div>
         ))}
-        
+
         {profiles.length < 5 && (
-          <div 
+          <div
             className="profile-card add-profile"
             onClick={() => setIsEditing(true)}
           >
@@ -185,14 +177,14 @@ const Profile = () => {
         <div className="profile-editor">
           <div className="editor-header">
             <h2>Create Profile</h2>
-            <button 
+            <button
               className="close-editor-btn"
               onClick={() => setIsEditing(false)}
             >
               <FiX />
             </button>
           </div>
-          
+
           <div className="avatar-selection">
             <h3>Choose an avatar:</h3>
             <div className="avatar-grid">
@@ -207,7 +199,7 @@ const Profile = () => {
               ))}
             </div>
           </div>
-          
+
           <div className="name-input">
             <input
               type="text"
@@ -217,15 +209,15 @@ const Profile = () => {
               maxLength="20"
             />
           </div>
-          
+
           <div className="editor-buttons">
-            <button 
+            <button
               className="cancel-btn"
               onClick={() => setIsEditing(false)}
             >
               Cancel
             </button>
-            <button 
+            <button
               className="save-btn"
               onClick={handleAddProfile}
               disabled={!newProfileName.trim() || !selectedPic}
@@ -235,8 +227,8 @@ const Profile = () => {
           </div>
         </div>
       )}
-      
-      <button 
+
+      <button
         className="manage-profiles-btn"
         onClick={() => setIsManaging(!isManaging)}
       >

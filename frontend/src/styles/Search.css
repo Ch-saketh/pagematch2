@@ -1,54 +1,112 @@
-/* src/styles/Search.css */
-
+/* Search Page Container */
 .search-page {
-  background-color: #000;
-  min-height: 100vh;
-  color: white;
-  padding: 2rem;
-  font-family: 'Helvetica Neue', sans-serif;
+  @apply min-h-screen bg-black text-white pt-20; /* Account for navbar */
 }
 
+.search-container {
+  @apply container mx-auto px-4 py-8;
+}
+
+/* Search Header */
 .search-header {
-  text-align: center;
-  margin-bottom: 2rem;
+  @apply mb-8;
 }
 
-.search-input {
-  width: 60%;
-  padding: 0.75rem 1rem;
-  font-size: 1rem;
-  border-radius: 8px;
-  border: none;
-  outline: none;
-  max-width: 500px;
+.search-title {
+  @apply text-3xl font-bold mb-2;
 }
 
-.search-results {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-  gap: 1.5rem;
-  padding-top: 1rem;
+.search-subtitle {
+  @apply text-gray-400;
 }
 
-.search-card {
-  position: relative;
-  background-color: #111;
-  border-radius: 8px;
-  overflow: hidden;
-  cursor: pointer;
-  transition: transform 0.3s ease;
+/* Results Grid */
+.results-grid {
+  @apply grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4;
 }
 
-.search-card:hover {
-  transform: scale(1.05);
+/* Book Card */
+.book-card {
+  @apply relative aspect-[2/3] rounded-lg overflow-hidden bg-gray-900 shadow-lg transition-all duration-300;
 }
 
-.search-cover {
-  width: 100%;
-  display: block;
+.book-card:hover {
+  @apply transform scale-105 z-10;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
 }
 
-.search-info {
-  padding: 0.5rem;
-  font-size: 0.85rem;
+.book-image {
+  @apply w-full h-full object-cover transition duration-300;
+}
+
+.book-card:hover .book-image {
+  @apply brightness-75;
+}
+
+/* Card Overlay */
+.book-overlay {
+  @apply absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent p-4 flex flex-col justify-end opacity-0 transition-opacity duration-300;
+}
+
+.book-card:hover .book-overlay {
+  @apply opacity-100;
+}
+
+.book-title {
+  @apply font-bold text-lg line-clamp-2;
+}
+
+.book-rating {
+  @apply flex items-center mt-1 text-yellow-400;
+}
+
+.book-genres {
+  @apply flex flex-wrap gap-1 mt-2;
+}
+
+.genre-tag {
+  @apply text-xs bg-gray-700/80 px-2 py-1 rounded-full;
+}
+
+/* Loading State */
+.loading-spinner {
+  @apply w-12 h-12 border-4 border-gray-700 border-t-red-600 rounded-full animate-spin;
+}
+
+/* Empty State */
+.empty-state {
+  @apply text-center py-20;
+}
+
+.empty-icon {
+  @apply text-6xl mb-4;
+}
+
+.empty-title {
+  @apply text-2xl font-bold mb-2;
+}
+
+.empty-description {
+  @apply text-gray-400 max-w-md mx-auto;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.result-animate {
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+/* Highlight animation for search terms */
+.highlight {
+  @apply bg-yellow-400/30 px-1 rounded;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { background-color: rgba(255, 212, 59, 0.3); }
+  50% { background-color: rgba(255, 212, 59, 0.6); }
 }

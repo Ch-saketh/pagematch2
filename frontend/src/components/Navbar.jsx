@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import "../styles/Navbar.css";
 
+
 const Navbar = () => {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
@@ -37,7 +38,7 @@ const Navbar = () => {
           </NavLink>
           <NavLink to="/manga" className="navbar__link">Manga</NavLink>
           <NavLink to="/books" className="navbar__link">Books</NavLink>
-          <NavLink to="/movies" className="navbar__link">Reviews</NavLink>
+          <NavLink to="/reviews" className="navbar__link">Reviews</NavLink> {/* Fixed: Changed from /movies to /reviews */}
         </div>
 
         {/* Right Section: Search + Profile */}
