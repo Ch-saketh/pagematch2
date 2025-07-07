@@ -37,19 +37,21 @@ const Login = () => {
         
         setIsNewUser(false);
       } else {
-        const userCredential = await signInWithEmailAndPassword(auth, email, password);
-        await userCredential.user.reload();
-        const updatedUser = auth.currentUser;
-        
-        if (!updatedUser.emailVerified) {
-          await sendEmailVerification(updatedUser);
-          alert('Please verify your email first. New verification email sent.');
-          await auth.signOut();
-          return;
-        }
-        
-        navigate('/Profile', { replace: true }); // THIS IS THE ONLY CHANGED LINE (originally '/home')
-      }
+         const userCredential = await signInWithEmailAndPassword(auth, email, password);
+         await userCredential.user.reload();
+         const updatedUser = auth.currentUser;
+
+      if (!updatedUser.emailVerified) {
+           await sendEmailVerification(updatedUser);
+           alert('Please verify your email first. New verification email sent.');
+           await auth.signOut();
+           return;
+  }
+
+  // 🔁 CHANGED: redirect to profile instead of home
+  navigate('/profile', { replace: true });
+}
+
     } catch (err) {
       const errorMap = {
         'auth/invalid-email': 'Please enter a valid email address',
