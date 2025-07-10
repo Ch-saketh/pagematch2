@@ -1,314 +1,205 @@
+/* Profile.css */
 .profile-selection-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
-  background-color: #141414;
-  color: white;
-  padding: 20px;
+  padding: 2rem;
   text-align: center;
-}
-
-.delete-profile-btn {
-  position: absolute;
-  top: -10px;
-  right: -10px;
-  background: #e50914;
-  border: none;
-  border-radius: 50%;
-  width: 25px;
-  height: 25px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   color: white;
-  cursor: pointer;
-  z-index: 2;
+  min-height: 100vh;
+  background: #121212;
 }
 
-.profile-selection-container h1 {
-  font-size: 3.5vw;
-  margin-bottom: 50px;
-}
-
-.profile-card:hover .settings-btn {
-  opacity: 1;
-}
-.settings-btn:hover {
-  background: rgba(0, 0, 0, 0.9);
-  transform: scale(1.1);
-}
-
-
-.profile-name-container {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
-.edit-name-btn {
-  background: none;
-  border: none;
-  color: grey;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-}
-.edit-name-btn:hover {
-  color: white;
-}
 .profiles-grid {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 30px;
-  margin-bottom: 50px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
 }
 
 .profile-card {
+  background-color: #1e1e1e;
+  border-radius: 1rem;
+  padding: 1rem;
+  width: 150px;
   position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-}
-
-
-
-.name-edit-container {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  margin-top: 10px;
-}
-
-.name-edit-container input {
-  background: #333;
-  border: 1px solid #666;
-  color: white;
-  padding: 5px;
-  border-radius: 3px;
-  max-width: 100px;
-}
-
-.save-edit-btn {
-  background: #e50914;
-  border: none;
-  border-radius: 3px;
-  color: white;
-  padding: 5px;
   cursor: pointer;
-  display: flex;
-  align-items: center;
-}
-
-.editor-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
-.profile-card {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-  cursor: pointer;
-  transition: all 0.3s ease;
+  text-align: center;
+  transition: transform 0.3s ease;
 }
 
 .profile-card:hover {
   transform: scale(1.05);
 }
 
-.close-editor-btn {
-  background: none;
-  border: none;
-  color: grey;
-  cursor: pointer;
-  font-size: 1.5rem;
-}
-.close-editor-btn:hover {
-  color: white;
-}
-svg {
-  vertical-align: middle;
-}
 .profile-card img {
-  width: 120px;
+  width: 100%;
   height: 120px;
-  border-radius: 4px;
-  border: 2px solid transparent;
   object-fit: cover;
-  transition: border-color 0.3s;
+  border-radius: 0.75rem;
+  border: 2px solid #333;
 }
 
-.profile-card:hover img {
-  border-color: white;
+.profile-name {
+  margin-top: 0.5rem;
+  font-size: 1rem;
+  font-weight: 500;
 }
 
-
-.profile-card span {
-  margin-top: 12px;
-  font-size: 1.2vw;
-  color: grey;
-}
-
-.profile-card:hover span {
+.delete-profile-btn,
+.settings-btn {
+  position: absolute;
+  top: 8px;
+  background: rgba(0,0,0,0.5);
+  border: none;
   color: white;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 50%;
+}
+
+.delete-profile-btn {
+  right: 8px;
+}
+
+.settings-btn {
+  right: 8px;
 }
 
 .add-profile {
-  color: grey;
-}
-
-.add-icon {
-  width: 120px;
-  height: 120px;
-  background-color: #2a2a2a;
-  border-radius: 4px;
   display: flex;
-  align-items: center;
+  flex-direction: column;
   justify-content: center;
-  font-size: 72px;
-  color: grey;
-}
-
-.add-profile:hover .add-icon {
-  background-color: #3a3a3a;
-  color: white;
-}
-
-.profile-editor {
-  background-color: #2a2a2a;
-  padding: 30px;
-  border-radius: 8px;
-  max-width: 600px;
-  margin: 0 auto 30px;
-}
-
-.avatar-selection h3, .name-input {
-  margin-bottom: 20px;
-}
-
-.avatar-grid {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 15px;
-  margin-bottom: 25px;
-}
-
-.avatar-grid img {
-  width: 80px;
-  height: 80px;
-  border-radius: 4px;
-  cursor: pointer;
-  object-fit: cover;
-}
-
-.avatar-grid img.selected {
-  border: 3px solid #e50914;
-}
-
-.name-input input {
-  width: 100%;
-  padding: 12px;
-  background-color: #666;
-  border: none;
-  border-radius: 4px;
-  color: white;
-  font-size: 16px;
-}
-
-.name-input input::placeholder {
+  border: 2px dashed #555;
+  background-color: #1a1a1a;
   color: #ccc;
 }
 
-.editor-buttons {
+.add-icon {
+  font-size: 2rem;
+}
+
+.profile-editor {
+  margin-top: 2rem;
+  background: #1a1a1a;
+  border-radius: 1rem;
+  padding: 1rem;
+}
+
+.editor-header {
   display: flex;
-  justify-content: flex-end;
-  gap: 15px;
-}
-
-.editor-buttons button {
-  padding: 8px 20px;
-  border: none;
-  border-radius: 4px;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.cancel-btn {
-  background-color: transparent;
-  color: grey;
-}
-
-.cancel-btn:hover {
-  color: white;
-}
-
-.save-btn {
-  background-color: white;
-  color: black;
-}
-
-.save-btn:hover {
-  background-color: #e50914;
-  color: white;
-}
-
-.save-btn:disabled {
-  background-color: grey;
-  cursor: not-allowed;
-}
-
-.manage-profiles-btn {
-  background-color: transparent;
-  border: 1px solid grey;
-  color: grey;
-  padding: 8px 20px;
-  font-size: 16px;
-  cursor: pointer;
-  margin-top: 50px;
-}
-
-.manage-profiles-btn:hover {
-  border-color: white;
-  color: white;
-}
-.profile-image-container {
-  position: relative;
-  display: inline-block;
-}
-.settings-btn {
-  position: absolute;
-  bottom: 10px;
-  right: 10px;
-  background: rgba(18, 15, 15, 0.858);
-  border: none;
-  border-radius: 50%;
-  width: 30px;
-  height: 30px;
-  display: flex;
+  justify-content: space-between;
   align-items: center;
-  justify-content: center;
-  color: rgb(241, 238, 238);
-  cursor: pointer;
-  opacity: 0;
-  transition: all 0.3s ease;
-  z-index: 2;
-}
-profile-card:hover .settings-btn {
-  opacity: 1;
 }
 
-.settings-btn:hover {
-  background: rgba(0, 0, 0, 0.9);
+.close-editor-btn {
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  color: white;
+  cursor: pointer;
+}
+
+.avatar-grid {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.avatar-grid img {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: 0.3s ease;
+}
+
+.avatar-grid img.selected {
+  border-color: #5227FF;
   transform: scale(1.1);
 }
 
-.settings-btn svg {
-  width: 16px;
-  height: 16px;
+.name-input input {
+  margin-top: 1rem;
+  padding: 0.5rem;
+  border-radius: 8px;
+  border: 1px solid #333;
+  background: #2a2a2a;
+  color: white;
+  width: 100%;
+  max-width: 300px;
+}
+
+.username-error {
+  color: #ff4d4f;
+  margin-top: 0.5rem;
+}
+
+.editor-buttons {
+  margin-top: 1rem;
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.cancel-btn,
+.save-btn,
+.manage-profiles-btn {
+  padding: 0.5rem 1.5rem;
+  border-radius: 2rem;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.3s ease;
+}
+
+.save-btn {
+  background: #5227FF;
+  color: white;
+}
+
+.cancel-btn {
+  background: #444;
+  color: white;
+}
+
+.manage-profiles-btn {
+  margin-top: 2rem;
+  background: #5227FF;
+  color: white;
+}
+
+.stepper-container {
+  margin-top: 1rem;
+  position: relative;
+}
+
+.stepper-footer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+}
+
+.stepper-footer button {
+  padding: 0.5rem 1rem;
+  border-radius: 1rem;
+  background-color: #5227FF;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+.stepper-content {
+  position: relative;
+  overflow: hidden;
+  min-height: 140px;
+}
+
+.selected-review-avatar {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin: 1rem auto;
+  display: block;
 }

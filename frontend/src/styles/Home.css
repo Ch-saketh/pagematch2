@@ -1,123 +1,177 @@
-/* Home.css */
-.page-container {
-  position: relative;
-  background-color: #141414;
-  color: white;
-  min-height: 100vh;
-}
-.banner {
-  position: relative;
-  z-index: 1;
-  margin-top: -80px; /* Pulls banner up slightly under navbar */
-  padding-top: 80px; /* Ensures content starts below navbar */
-}
-.main-content {
-  margin-top: 80px; /* Must match navbar height */
-}
-.main-content {
-  margin-top: 80px; /* Must match navbar height */
+/* Make sure root allows scrolling */
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  background-color: #111;
 }
 
+/* Overall layout */
+.page-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #111;
+  color: #fff;
+}
+
+/* Main content padding to avoid navbar overlap */
+.main-content {
+  flex: 1;
+  padding-top: 80px; /* Adjust if navbar height changes */
+  overflow-y: auto;
+}
+
+/* =========================
+   TRENDING SECTION STYLES
+   ========================= */
 .content-section {
-  padding: 2rem 4rem;
-  position: relative;
-  z-index: 2;
+  padding: 2rem 1rem;
 }
 
 .section-title {
-  font-size: 1.5rem;
+  font-size: 1.8rem;
   font-weight: 600;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
 }
 
 .card-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 20px;
-  padding: 10px 0;
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  padding-bottom: 1rem;
+  padding-left: 0.5rem;
+}
+
+/* Hide horizontal scrollbar */
+.card-grid::-webkit-scrollbar {
+  display: none;
+}
+.card-grid {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 .content-card {
+  min-width: 180px;
+  background-color: #1e1e1e;
+  border-radius: 12px;
+  overflow: hidden;
   position: relative;
   transition: transform 0.3s ease;
+  flex-shrink: 0;
+  cursor: pointer;
 }
 
 .content-card:hover {
-  transform: translateY(-10px);
-    transform: scale(1.05);
+  transform: scale(1.08);
 }
 
 .card-image {
-  height: 0;
-  padding-bottom: 150%;
+  width: 100%;
+  height: 220px;
   background-size: cover;
   background-position: center;
-  border-radius: 4px;
-  margin-bottom: 10px;
 }
 
 .card-title {
+  padding: 0.5rem;
   font-size: 1rem;
-  font-weight: 500;
-  margin-top: 0.5rem;
+  text-align: center;
+  color: #fff;
 }
 
+/* Badges (N, C, H, M) */
 .content-badge {
   position: absolute;
-  top: 10px;
-  right: 10px;
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 700;
-  z-index: 3;
+  top: 8px;
+  left: 8px;
+  background-color: #ff4444;
+  color: white;
+  padding: 2px 8px;
+  font-size: 0.7rem;
+  border-radius: 4px;
+  text-transform: uppercase;
 }
 
-.content-badge.manga {
-  background: #e50914;
-}
-
-.content-badge.new {
-  background: #46d369;
-}
-
-.content-badge.classic {
-  background: #1e90ff;
-}
-
-.content-badge.hot {
-  background: #ff8c00;
-}
+.content-badge.manga { background-color: #ff4081; }
+.content-badge.new { background-color: #4caf50; }
+.content-badge.classic { background-color: #3f51b5; }
+.content-badge.hot { background-color: #ff9800; }
 
 .progress-bar {
   position: absolute;
   bottom: 0;
   left: 0;
-  height: 4px;
-  background: #e50914;
-  border-radius: 0 0 4px 4px;
-  z-index: 3;
+  height: 5px;
+  background-color: #00e676;
 }
 
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  .main-content {
-    margin-top: 60px;
-  }
-  
-  .banner {
-    margin-top: -60px;
-    padding-top: 60px;
-  }
-  
-  .content-section {
-    padding: 1.5rem;
-  }
-  
-  .card-grid {
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-  }
+/* =========================
+   HOMEPAGE RECOMMENDATION STYLES
+   ========================= */
+.homepage-recommendations {
+  padding: 2rem 1rem;
+  background-color: #111;
+  color: white;
+}
+
+.rec-section {
+  margin-bottom: 2rem;
+}
+
+.rec-row {
+  display: flex;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  padding-bottom: 0.5rem;
+  gap: 1rem;
+  padding-left: 0.5rem;
+}
+
+/* Hide scrollbar */
+.rec-row::-webkit-scrollbar {
+  display: none;
+}
+.rec-row {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.rec-card {
+  min-width: 160px;
+  background-color: #1e1e1e;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: transform 0.3s ease;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.rec-card:hover {
+  transform: scale(1.08);
+}
+
+.rec-image {
+  width: 100%;
+  height: 200px;
+  background-size: cover;
+  background-position: center;
+}
+
+.rec-info {
+  padding: 0.5rem;
+  text-align: center;
+}
+
+.rec-info h3 {
+  font-size: 1rem;
+  margin: 0.3rem 0;
+  color: #fff;
+}
+
+.rec-info p {
+  font-size: 0.9rem;
+  color: #ffcc00;
 }

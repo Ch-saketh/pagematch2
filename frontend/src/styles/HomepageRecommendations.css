@@ -1,0 +1,72 @@
+.homepage-recommendations {
+  padding: 2rem 1rem;
+  background-color: #111;
+  color: white;
+}
+
+.rec-section {
+  margin-bottom: 2rem;
+}
+
+.section-title {
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  padding-left: 0.5rem;
+  color: #fff;
+}
+
+.rec-row {
+  display: flex;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  padding-bottom: 0.5rem;
+  gap: 1rem;
+  padding-left: 0.5rem;
+}
+
+/* Hide scrollbar */
+.rec-row::-webkit-scrollbar {
+  display: none;
+}
+.rec-row {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.rec-card {
+  min-width: 160px;
+  background-color: #1e1e1e;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: transform 0.3s ease;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.rec-card:hover {
+  transform: scale(1.08);
+}
+
+.rec-image {
+  width: 100%;
+  height: 200px;
+  background-size: cover;
+  background-position: center;
+}
+
+.rec-info {
+  padding: 0.5rem;
+  text-align: center;
+}
+
+.rec-info h3 {
+  font-size: 1rem;
+  margin: 0.3rem 0;
+  color: #fff;
+}
+
+.rec-info p {
+  font-size: 0.9rem;
+  color: #ffcc00;
+}

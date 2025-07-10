@@ -49,9 +49,10 @@ const Navbar = () => {
           <NavLink to="/books" className="navbar__link">
             Books
           </NavLink>
-          <NavLink to="/reviews" className="navbar__link">
-            Reviews
-          </NavLink>
+          <NavLink to="/assistant" className="navbar__link">
+           🤖 Book Assistant
+            </NavLink>
+
         </div>
 
         {/* Right Section: Search + Profile */}

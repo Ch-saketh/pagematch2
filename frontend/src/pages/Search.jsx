@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import axios from "axios";
 
-
 const Search = () => {
   const [searchParams] = useSearchParams();
   const query = searchParams.get("q") || "";
@@ -10,30 +9,24 @@ const Search = () => {
   const [loading, setLoading] = useState(true);
   const [selectedBook, setSelectedBook] = useState(null);
 
-  // Prevent multiple logging due to React.StrictMode
-  const hasLogged = useRef(false);
-  const logOnce = useRef({}); 
-
-// ...
-
-const loggedQueries = useRef(new Set());  // ✅ Keeps track of queries already logged
-
+  const logOnce = useRef({});
+  const API_BASE = "https://n4sglb3w-5000.inc1.devtunnels.ms"; // ✅ DevTunnel base
 
   useEffect(() => {
     const fetchResults = async () => {
       setLoading(true);
       try {
-        // ✅ Only log ONCE per query
+        // ✅ Log search only once
         if (!logOnce.current[query]) {
-          await axios.post("http://localhost:5000/log-search", {
+          await axios.post(`${API_BASE}/log-search`, {
             query,
-            user_id: "guest",
+            user_id: localStorage.getItem("selectedProfileName") || "guest",
           });
           logOnce.current[query] = true;
         }
 
-        const res = await axios.get("http://localhost:5000/search", {
-          params: { query },
+        const res = await axios.get(`${API_BASE}/search`, {
+          params: { query }
         });
 
         const data = res.data.results.map((item, index) => ({
@@ -116,7 +109,6 @@ const loggedQueries = useRef(new Set());  // ✅ Keeps track of queries already 
         </div>
       )}
 
-      {/* Modal */}
       {selectedBook && (
         <div
           style={{

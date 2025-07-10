@@ -45,7 +45,7 @@ const Profile = () => {
 
   const handleAddProfile = async () => {
     if (newProfileName.trim() && selectedPic) {
-      const res = await fetch("http://localhost:5000/check-username", {
+      const res = await fetch("https://n4sglb3w-5000.inc1.devtunnels.ms/check-username", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username: newProfileName })
@@ -67,7 +67,7 @@ const Profile = () => {
         }
       };
 
-      await fetch("http://localhost:5000/create-user", {
+      await fetch("https://n4sglb3w-5000.inc1.devtunnels.ms/check-username", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username: newProfile.name, avatar: newProfile.avatar })
@@ -95,7 +95,7 @@ const Profile = () => {
 
   const saveEditedName = async (profile) => {
     try {
-      const res = await fetch("http://localhost:5000/check-username", {
+      const res = await fetch("https://n4sglb3w-5000.inc1.devtunnels.ms/check-username", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username: newProfileName })
@@ -111,7 +111,7 @@ const Profile = () => {
         p.id === profile.id ? { ...p, name: editedName } : p
       );
 
-      await fetch("http://localhost:5000/create-user", {
+      await fetch("https://n4sglb3w-5173.inc1.devtunnels.ms/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username: editedName, avatar: profile.avatar })
