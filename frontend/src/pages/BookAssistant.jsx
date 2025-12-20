@@ -15,7 +15,7 @@ const BookAssistant = () => {
   const [persistentHistory, setPersistentHistory] = useState([]);
   const chatBoxRef = useRef(null);
 
-  const API_BASE_URL = "https://n4sglb3w-5000.inc1.devtunnels.ms";
+  const API_BASE_URL = "http://localhost:5000";
 
   useEffect(() => {
     if (chatBoxRef.current) {

@@ -7,7 +7,7 @@ const HomepageRecommendations = () => {
   useEffect(() => {
     const fetchRecs = async () => {
       try {
-        const res = await fetch("https://n4sglb3w-5000.inc1.devtunnels.ms/homepage-recommendations");
+        const res = await fetch("http://localhost:5000/homepage-recommendations");
         const data = await res.json();
         setRecommendations(data.recommendations || []);
       } catch (error) {

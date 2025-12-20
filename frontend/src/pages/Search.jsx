@@ -10,7 +10,7 @@ const Search = () => {
   const [selectedBook, setSelectedBook] = useState(null);
 
   const logOnce = useRef({});
-  const API_BASE = "https://n4sglb3w-5000.inc1.devtunnels.ms"; // ✅ DevTunnel base
+  const API_BASE = "http://localhost:5000"; // ✅ Backend base
 
   useEffect(() => {
     const fetchResults = async () => {

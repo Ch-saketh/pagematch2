@@ -1,9 +1,13 @@
 import React from "react";
-import { HashRouterRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { HashRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import Login from "./pages/Login";
 import Home from "./pages/Home";
-import Profile from "./pages/Profile"; // ✅ Import the Profile page
-import SearchBar from './pages/SearchBar';
+import Profile from "./pages/Profile";
+import Search from "./pages/Search";
+import Books from "./pages/Books";
+import Manga from "./pages/Manga";
+import Settings from "./pages/Settings";
+import BookAssistant from "./pages/BookAssistant";
 
 const AppRouter = () => {
   return (
@@ -14,11 +18,16 @@ const AppRouter = () => {
       
         {/* Login page first */}
         <Route path="/login" element={<Login />} />
-        <Route path="/login" element={<Navigate to="/profile" replace />} />
-        {/* After login */}
+        
+        {/* After login - Main pages */}
         <Route path="/home" element={<Home />} />
-        <Route path="/search" element={<SearchBar />} />
-        <Route path="/profile" element={<Profile />} /> {/* ✅ Profile route added */}
+        <Route path="/search" element={<Search />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/books" element={<Books />} />
+        <Route path="/manga" element={<Manga />} />
+        <Route path="/settings" element={<Settings />} />
+        <Route path="/book-assistant" element={<BookAssistant />} />
+        
         {/* Catch-all */}
         <Route path="*" element={<Navigate to="/login" />} />
       </Routes>
