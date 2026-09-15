@@ -318,3 +318,35 @@
     display: flex;
   }
 }
+
+/* Compliance Notice Nav Button */
+.pm-nav-compliance-btn {
+  background: rgba(155, 226, 139, 0.05);
+  border: 1px solid rgba(155, 226, 139, 0.25);
+  color: var(--accent, #9be28b);
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  padding: 4px 8px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+  height: 28px;
+}
+
+.pm-nav-compliance-btn:hover {
+  background: rgba(155, 226, 139, 0.12);
+  border-color: var(--accent, #9be28b);
+  box-shadow: 0 0 10px rgba(155, 226, 139, 0.2);
+}
+
+.pm-compliance-icon {
+  color: var(--accent, #9be28b);
+}
+
+@media (max-width: 990px) {
+  .pm-nav-compliance-btn {
+    display: none;
+  }
+}

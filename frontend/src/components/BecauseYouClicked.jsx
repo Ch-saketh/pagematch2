@@ -1,6 +1,6 @@
 // src/components/BecauseYouClicked.jsx - Dynamic Recommendations Based on Every Click/Like
 import React, { useState, useEffect, useRef } from 'react';
-import { FiChevronLeft, FiChevronRight, FiZap, FiHeart, FiArrowRight, FiRotateCw } from 'react-icons/fi';
+import { FiChevronLeft, FiChevronRight, FiZap, FiHeart, FiArrowRight, FiRotateCw, FiShield } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 import API_BASE_URL from '../config';
 import { getEditorialCover } from '../utils/coverHelper';
@@ -110,10 +110,20 @@ const BecauseYouClicked = () => {
           </p>
         </div>
 
-        {/* Real-Time Model Status Badge */}
-        <div className="pm-model-active-badge font-mono">
-          <FiZap className="zap-icon" />
-          <span>LIVE TF-IDF ADAPTATION</span>
+        {/* Real-Time Model Status & Compliance Badges */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+          <button
+            className="pm-fairuse-badge font-mono"
+            onClick={() => window.dispatchEvent(new CustomEvent('pagematch:open-compliance-modal'))}
+            title="Read statutory copyright declaration (Indian Copyright Act, 1957 - Section 52)"
+          >
+            <FiShield size={11} />
+            <span>[ § 52 COMPLIANCE ]</span>
+          </button>
+          <div className="pm-model-active-badge font-mono">
+            <FiZap className="zap-icon" />
+            <span>LIVE TF-IDF ADAPTATION</span>
+          </div>
         </div>
       </div>
 

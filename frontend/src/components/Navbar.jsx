@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { NavLink, useNavigate, useLocation } from "react-router-dom";
-import { FiSearch, FiX, FiMenu, FiUser, FiTerminal } from "react-icons/fi";
+import { FiSearch, FiX, FiMenu, FiUser, FiTerminal, FiShield } from "react-icons/fi";
 import "../styles/Navbar.css";
 
 const Navbar = () => {
@@ -135,6 +135,19 @@ const Navbar = () => {
               <span className="pm-key-shortcut">/</span>
             </button>
           </div>
+
+          {/* Legal Compliance & Research Notice Button */}
+          <button
+            className="pm-nav-compliance-btn font-mono"
+            onClick={(e) => {
+              e.stopPropagation();
+              window.dispatchEvent(new CustomEvent('pagematch:open-compliance-modal'));
+            }}
+            title="Indian Copyright Act, 1957 (Sec 52) Fair Dealing & Research Declaration"
+          >
+            <FiShield size={11} className="pm-compliance-icon" />
+            <span>[ § 52 NOTICE ]</span>
+          </button>
 
           {/* Minimalist Profile Button */}
           <button

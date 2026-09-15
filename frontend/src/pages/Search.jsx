@@ -4,7 +4,7 @@ import axios from "axios";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import API_BASE_URL from "../config";
-import { FiX, FiArrowUpRight, FiBookmark } from "react-icons/fi";
+import { FiX, FiArrowUpRight, FiBookmark, FiShield } from "react-icons/fi";
 import { getEditorialCover } from "../utils/coverHelper";
 import { recordBookClick } from "../utils/interactionTracker";
 import "../styles/Search.css";
@@ -266,14 +266,31 @@ const Search = () => {
                 </div>
               )}
 
+              {/* Statutory Fair Dealing & Research Notice */}
+              <div 
+                className="pm-modal-compliance-notice font-mono"
+                onClick={() => window.dispatchEvent(new CustomEvent('pagematch:open-compliance-modal'))}
+                title="Click to view statutory legal provisions (Section 52, Indian Copyright Act, 1957)"
+              >
+                <FiShield size={13} className="compliance-icon" />
+                <span className="compliance-text">
+                  <strong>STATUTORY FAIR DEALING NOTICE:</strong> Operating under Section 52(1)(a) of the Indian Copyright Act, 1957. Full text is strictly not hosted. This experimental engine developed from scratch by Saketh Chokkapu serves purely for algorithmic indexing &amp; research.
+                </span>
+                <span className="compliance-action">[§ 52 PROVISIONS &rarr;]</span>
+              </div>
+
               <div className="pm-modal-actions font-mono">
-                <button
+                <a
                   className="btn-editorial btn-editorial-primary"
-                  onClick={() => alert(`Opening volume "${selectedBook.title}"`)}
+                  href={`https://www.google.com/search?tbm=bks&q=${encodeURIComponent(selectedBook.title + ' ' + (selectedBook.authors?.[0] || ''))}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ textDecoration: 'none' }}
+                  title="Search authorized editions & libraries on Google Books"
                 >
-                  <span>[ ACCESS VOLUME ]</span>
+                  <span>[ OFFICIAL EDITIONS &amp; LIBRARIES ]</span>
                   <FiArrowUpRight />
-                </button>
+                </a>
                 <button
                   className="btn-editorial"
                   onClick={() => alert(`Saved "${selectedBook.title}" to reading pipeline!`)}

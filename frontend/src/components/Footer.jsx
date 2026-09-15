@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FiArrowUp, FiExternalLink, FiGlobe } from 'react-icons/fi';
+import { FiArrowUp, FiExternalLink, FiGlobe, FiShield } from 'react-icons/fi';
 import '../styles/Footer.css';
 
 const Footer = () => {
@@ -178,7 +178,29 @@ const Footer = () => {
                   Lead: Saketh Chokkapu
                 </span>
               </li>
+              <li>
+                <button
+                  type="button"
+                  onClick={() => window.dispatchEvent(new CustomEvent('pagematch:open-compliance-modal'))}
+                  className="pm-footer__link pm-footer__link--accent"
+                  title="Read Fair Dealing & Indian Copyright Act (Sec 52) Notice"
+                  style={{ background: 'none', border: 'none', padding: 0, textAlign: 'left', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '6px' }}
+                >
+                  <FiShield size={11} />
+                  <span>§ 52 Fair Dealing Notice</span>
+                </button>
+              </li>
             </ul>
+          </div>
+        </div>
+
+        {/* Legal Statutory Bar */}
+        <div className="pm-footer__statutory-bar font-mono">
+          <div className="statutory-content">
+            <span className="statutory-badge">[STATUTORY FAIR DEALING NOTICE]</span>
+            <span className="statutory-text">
+              Engineered from scratch by Saketh Chokkapu. Operating strictly under <strong>Section 52(1)(a) of the Indian Copyright Act, 1957</strong> (Fair Dealing for private study, research, and review). Full-text copyrighted literary manuscripts or e-books are strictly not hosted or reproduced.
+            </span>
           </div>
         </div>
 

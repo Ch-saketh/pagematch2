@@ -217,6 +217,41 @@
   color: #666660;
 }
 
+/* Statutory Fair Dealing Disclosure Bar */
+.pm-footer__statutory-bar {
+  margin-top: 3.5rem;
+  padding: 1rem 1.25rem;
+  background: rgba(155, 226, 139, 0.03);
+  border: 1px solid rgba(155, 226, 139, 0.2);
+  border-left: 3px solid var(--accent);
+}
+
+.statutory-content {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.statutory-badge {
+  color: var(--accent);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+.statutory-text {
+  color: #8f968f;
+  font-size: 11px;
+  line-height: 1.6;
+  flex: 1;
+}
+
+.statutory-text strong {
+  color: #d1d5d1;
+}
+
 /* Bottom Copyright & Locale */
 .pm-footer__bottom {
   display: flex;

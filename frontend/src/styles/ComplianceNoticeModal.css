@@ -1,0 +1,423 @@
+/* ==========================================================================
+   PageMatch Architectural Compliance & Legal Notice Styles
+   Adhering to saketh-dev architectural theme & Indian Copyright Act (Sec 52)
+   ========================================================================== */
+
+/* Top Architectural Banner */
+.pm-compliance-banner {
+  position: relative;
+  z-index: 999;
+  background: #0f1110;
+  border-bottom: 1px solid rgba(155, 226, 139, 0.2);
+  color: #e4e7e4;
+  font-size: 11px;
+  line-height: 1.5;
+  width: 100%;
+}
+
+.pm-compliance-banner__inner {
+  max-width: 1380px;
+  margin: 0 auto;
+  padding: 8px 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.pm-compliance-banner__lead {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+}
+
+.compliance-pulse-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent, #9be28b);
+  box-shadow: 0 0 8px rgba(155, 226, 139, 0.6);
+  flex-shrink: 0;
+  animation: pulse-dot 2s infinite ease-in-out;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 0.5; transform: scale(0.9); }
+  50% { opacity: 1; transform: scale(1.15); }
+}
+
+.compliance-tag {
+  color: var(--accent, #9be28b);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+.compliance-text {
+  color: #a6aba6;
+}
+
+.compliance-text strong {
+  color: #e4e7e4;
+  font-weight: 600;
+}
+
+.pm-compliance-banner__actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.compliance-btn {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #a6aba6;
+  font-family: inherit;
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  padding: 3px 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.compliance-btn--details:hover {
+  border-color: var(--accent, #9be28b);
+  color: var(--accent, #9be28b);
+  background: rgba(155, 226, 139, 0.06);
+}
+
+.compliance-btn--dismiss {
+  padding: 3px 6px;
+}
+
+.compliance-btn--dismiss:hover {
+  border-color: #ff6b6b;
+  color: #ff6b6b;
+}
+
+/* ==========================================================================
+   Full Architectural Modal Dialog
+   ========================================================================== */
+
+.pm-compliance-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  animation: pmFadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes pmFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.pm-compliance-dialog {
+  background: #111211;
+  border: 1px solid rgba(155, 226, 139, 0.35);
+  box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.9), 0 0 40px rgba(155, 226, 139, 0.08);
+  width: 100%;
+  max-width: 900px;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  animation: pmDialogSlide 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes pmDialogSlide {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Dialog Header */
+.pm-compliance-dialog__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: #151715;
+}
+
+.pm-compliance-dialog__meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.pm-compliance-dialog__meta .meta-icon {
+  color: var(--accent, #9be28b);
+  display: flex;
+  align-items: center;
+}
+
+.pm-compliance-dialog__meta .meta-title {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: #d1d5d1;
+}
+
+.pm-compliance-dialog__close {
+  background: transparent;
+  border: 1px solid transparent;
+  color: #7b827b;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  transition: all 0.15s ease;
+}
+
+.pm-compliance-dialog__close:hover {
+  color: #ff6b6b;
+  border-color: rgba(255, 107, 107, 0.3);
+  background: rgba(255, 107, 107, 0.08);
+}
+
+/* Dialog Body */
+.pm-compliance-dialog__body {
+  padding: 1.75rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Callout */
+.pm-compliance-callout {
+  background: rgba(155, 226, 139, 0.04);
+  border: 1px solid rgba(155, 226, 139, 0.25);
+  border-left: 3px solid var(--accent, #9be28b);
+  padding: 1rem 1.25rem;
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+
+.callout-icon {
+  color: var(--accent, #9be28b);
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+.callout-heading {
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: var(--accent, #9be28b);
+  margin-bottom: 6px;
+}
+
+.callout-text p {
+  color: #c4c9c4;
+  font-size: 13px;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.callout-text strong {
+  color: #ffffff;
+}
+
+/* 3-Column Grid */
+.pm-compliance-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+}
+
+.pm-compliance-col {
+  background: #151715;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 1.25rem 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.col-header {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  margin-bottom: 10px;
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.08);
+  padding-bottom: 8px;
+}
+
+.col-num {
+  color: var(--accent, #9be28b);
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.col-title {
+  color: #e4e7e4;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+}
+
+.col-desc {
+  color: #9da39d;
+  font-size: 12px;
+  line-height: 1.55;
+  margin-bottom: 10px;
+  font-family: inherit;
+}
+
+.col-desc code {
+  background: rgba(155, 226, 139, 0.1);
+  color: var(--accent, #9be28b);
+  padding: 1px 4px;
+  font-size: 11px;
+}
+
+.col-highlight {
+  background: rgba(0, 0, 0, 0.4);
+  border-left: 2px solid var(--accent, #9be28b);
+  padding: 8px 10px;
+  font-size: 11px;
+  color: #d1d5d1;
+  line-height: 1.5;
+  margin: 6px 0;
+}
+
+.col-highlight strong {
+  display: block;
+  color: var(--accent, #9be28b);
+  font-size: 10px;
+  margin-bottom: 4px;
+}
+
+.col-highlight em {
+  font-style: italic;
+  color: #a6aba6;
+}
+
+.col-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.col-list li {
+  font-size: 11px;
+  color: #7b827b;
+  line-height: 1.4;
+}
+
+/* Sign-off banner */
+.pm-compliance-signoff {
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  padding-top: 1rem;
+  font-size: 11px;
+  color: #7b827b;
+}
+
+.signoff-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.signoff-label {
+  color: #646a64;
+}
+
+.signoff-val {
+  color: #d1d5d1;
+}
+
+.signoff-sep {
+  color: #3b3f3b;
+}
+
+.text-accent {
+  color: var(--accent, #9be28b);
+  font-weight: 600;
+}
+
+/* Dialog Footer */
+.pm-compliance-dialog__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  background: #151715;
+  gap: 1rem;
+}
+
+.footer-left .text-muted {
+  font-size: 10px;
+  color: #646a64;
+  letter-spacing: 0.04em;
+}
+
+.compliance-action-btn {
+  background: transparent;
+  border: 1px solid rgba(155, 226, 139, 0.35);
+  color: var(--accent, #9be28b);
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  padding: 8px 16px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+}
+
+.compliance-action-btn--primary {
+  background: var(--accent, #9be28b);
+  color: #0a0a09;
+  border-color: var(--accent, #9be28b);
+}
+
+.compliance-action-btn--primary:hover {
+  background: #b2efa4;
+  box-shadow: 0 0 15px rgba(155, 226, 139, 0.4);
+}
+
+/* Mobile responsive */
+@media (max-width: 820px) {
+  .pm-compliance-grid {
+    grid-template-columns: 1fr;
+  }
+  .pm-compliance-banner__inner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+  .pm-compliance-dialog__footer {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .compliance-action-btn {
+    justify-content: center;
+  }
+}

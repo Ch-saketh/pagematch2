@@ -62,6 +62,27 @@
   100% { transform: scale(1.15); opacity: 1; filter: drop-shadow(0 0 6px var(--accent)); }
 }
 
+.pm-fairuse-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #a6aba6;
+  font-size: 11px;
+  letter-spacing: var(--tracking-mono);
+  padding: 6px 10px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.pm-fairuse-badge:hover {
+  background: rgba(155, 226, 139, 0.08);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
 /* History Strip */
 .pm-history-strip {
   display: flex;
