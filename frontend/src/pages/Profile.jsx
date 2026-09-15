@@ -142,21 +142,21 @@ const Profile = () => {
     setIsDragging(false);
   };
 
-  const openNewProfileModal = () => {
+  const openNewProfileModal = (tab = 'preset') => {
     setEditingAvatarProfile(null);
     setNewProfileName('');
     setSelectedPic(profilePics[0]);
-    setAvatarSourceTab('preset');
+    setAvatarSourceTab(tab);
     setUploadError(null);
     setUsernameError(null);
     setIsEditing(true);
   };
 
-  const openChangeAvatarModal = (profile, e) => {
+  const openChangeAvatarModal = (profile, tab = 'upload', e) => {
     if (e) e.stopPropagation();
     setEditingAvatarProfile(profile);
     setSelectedPic(profile.avatar);
-    setAvatarSourceTab(profile.avatar?.startsWith('data:image/svg+xml') ? 'preset' : 'upload');
+    setAvatarSourceTab(tab);
     setUploadError(null);
     setUsernameError(null);
     setIsEditing(true);
@@ -323,8 +323,16 @@ const Profile = () => {
 
                 {/* Middle Avatar & Info Row */}
                 <div className="profile-middle-section">
-                  <div className="profile-image-container">
+                  <div 
+                    className="profile-image-container"
+                    title="Click to upload custom photo or pick avatar"
+                    onClick={(e) => openChangeAvatarModal(profile, 'upload', e)}
+                  >
                     <img src={profile.avatar} alt={profile.name} />
+                    <div className="profile-image-hover-overlay font-mono">
+                      <FiUploadCloud size={18} />
+                      <span>UPLOAD</span>
+                    </div>
                   </div>
 
                   <div className="profile-info-col">
@@ -366,17 +374,27 @@ const Profile = () => {
                     )}
 
                     <span className="profile-role-tag font-mono">// {roleTag}</span>
-                    <span className="profile-system-meta font-mono">ISOLATED SPACE</span>
 
-                    {isManaging && (
+                    {/* Explicit, directly visible Upload Photo & Change Avatar Buttons */}
+                    <div className="profile-avatar-action-row">
                       <button
-                        className="change-avatar-btn-inline font-mono"
-                        onClick={(e) => openChangeAvatarModal(profile, e)}
+                        className="profile-upload-action-pill font-mono"
+                        title="Upload your own photo from your computer"
+                        onClick={(e) => openChangeAvatarModal(profile, 'upload', e)}
                       >
-                        <FiCamera size={11} />
-                        <span>CHANGE AVATAR</span>
+                        <FiUploadCloud size={12} />
+                        <span>UPLOAD PHOTO</span>
                       </button>
-                    )}
+
+                      <button
+                        className="profile-avatar-mini-btn font-mono"
+                        title="Pick from developer system avatars"
+                        onClick={(e) => openChangeAvatarModal(profile, 'preset', e)}
+                      >
+                        <FiImage size={11} />
+                        <span>AVATARS</span>
+                      </button>
+                    </div>
                   </div>
                 </div>
 
@@ -394,38 +412,37 @@ const Profile = () => {
 
                 {/* Card Action Footer */}
                 <div className="profile-card-actions">
+                  <button
+                    className="profile-action-btn font-mono"
+                    title="Upload photo from computer"
+                    onClick={(e) => openChangeAvatarModal(profile, 'upload', e)}
+                  >
+                    <FiUploadCloud size={12} />
+                    <span>UPLOAD PHOTO</span>
+                  </button>
+
                   {isManaging ? (
-                    <>
-                      <button
-                        className="delete-profile-btn font-mono"
-                        style={{ flex: 1 }}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleDeleteProfile(profile.id);
-                        }}
-                      >
-                        <FiTrash2 size={12} />
-                        <span>TERMINATE</span>
-                      </button>
-                      <button
-                        className="profile-action-btn font-mono"
-                        onClick={(e) => handleSettingsClick(profile.id, e)}
-                      >
-                        <FiSettings size={12} />
-                        <span>SETTINGS</span>
-                      </button>
-                    </>
+                    <button
+                      className="delete-profile-btn font-mono"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleDeleteProfile(profile.id);
+                      }}
+                    >
+                      <FiTrash2 size={12} />
+                      <span>TERMINATE</span>
+                    </button>
                   ) : isActive ? (
                     <button className="profile-action-btn profile-action-btn--active font-mono" disabled>
                       <FiUserCheck size={13} />
-                      <span>[ ACTIVE OPERATOR SESSION ]</span>
+                      <span>[ ACTIVE SESSION ]</span>
                     </button>
                   ) : (
                     <button
                       className="profile-action-btn font-mono"
                       onClick={() => handleProfileSelect(profile)}
                     >
-                      <span>[ RESUME SESSION ]</span>
+                      <span>[ RESUME ]</span>
                       <FiArrowRight size={12} />
                     </button>
                   )}
@@ -450,6 +467,14 @@ const Profile = () => {
 
         {/* Bottom Control Toolbar */}
         <div className="profile-actions-bar">
+          <button
+            className="btn-editorial btn-editorial-primary font-mono"
+            onClick={() => openNewProfileModal('upload')}
+          >
+            <FiUploadCloud size={13} />
+            <span>[ + UPLOAD PHOTO PROFILE ]</span>
+          </button>
+
           <button
             className={`btn-editorial font-mono ${isManaging ? 'btn-editorial-primary' : ''}`}
             onClick={() => setIsManaging(!isManaging)}
@@ -563,6 +588,16 @@ const Profile = () => {
                       PNG, JPG, WEBP, SVG · AUTOMATICALLY SCALED
                     </div>
                   </div>
+
+                  <button
+                    type="button"
+                    className="btn-editorial btn-editorial-primary font-mono"
+                    style={{ width: '100%', justifyContent: 'center', marginBottom: '1.25rem', padding: '10px' }}
+                    onClick={() => fileInputRef.current?.click()}
+                  >
+                    <FiUploadCloud size={14} />
+                    <span>[ BROWSE IMAGE FILE FROM COMPUTER ]</span>
+                  </button>
 
                   {uploadError && (
                     <div className="username-error font-mono" style={{ marginBottom: '12px' }}>
