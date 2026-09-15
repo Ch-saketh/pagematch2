@@ -359,8 +359,8 @@ const Profile = () => {
                   >
                     <img src={profile.avatar} alt={profile.name} />
                     <div className="profile-image-hover-overlay font-mono">
-                      <FiUploadCloud size={18} />
-                      <span>UPLOAD</span>
+                      <FiUploadCloud size={16} />
+                      <span>CHANGE</span>
                     </div>
                   </div>
 
@@ -376,16 +376,17 @@ const Profile = () => {
                         />
                         <button
                           className="save-edit-btn"
+                          title="Save Username"
                           onClick={(e) => {
                             e.stopPropagation();
                             saveEditedName(profile);
                           }}
                         >
-                          <FiCheck />
+                          <FiCheck size={13} />
                         </button>
                       </div>
                     ) : (
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <div className="profile-name-row">
                         <h2 className="profile-display-name">{profile.name}</h2>
                         <button
                           className="edit-name-btn"
@@ -403,11 +404,11 @@ const Profile = () => {
 
                     <span className="profile-role-tag font-mono">// {roleTag}</span>
 
-                    {/* Explicit, directly visible Username, Upload Photo & Change Avatar Buttons */}
-                    <div className="profile-avatar-action-row">
+                    {/* Compact, clean action pills */}
+                    <div className="profile-card-pills-row">
                       <button
-                        className="profile-username-action-pill font-mono"
-                        title="Add or update operator username"
+                        className="profile-card-pill font-mono"
+                        title="Edit operator username"
                         onClick={(e) => openEditUsernameModal(profile, e)}
                       >
                         <FiEdit2 size={10} />
@@ -415,21 +416,12 @@ const Profile = () => {
                       </button>
 
                       <button
-                        className="profile-upload-action-pill font-mono"
-                        title="Upload your own photo from your computer"
+                        className="profile-card-pill font-mono"
+                        title="Upload photo or choose avatar"
                         onClick={(e) => openChangeAvatarModal(profile, 'upload', e)}
                       >
                         <FiUploadCloud size={11} />
-                        <span>UPLOAD PHOTO</span>
-                      </button>
-
-                      <button
-                        className="profile-avatar-mini-btn font-mono"
-                        title="Pick from developer system avatars"
-                        onClick={(e) => openChangeAvatarModal(profile, 'preset', e)}
-                      >
-                        <FiImage size={11} />
-                        <span>AVATARS</span>
+                        <span>PHOTO / AVATAR</span>
                       </button>
                     </div>
                   </div>
@@ -447,26 +439,8 @@ const Profile = () => {
                   </div>
                 </div>
 
-                {/* Card Action Footer */}
+                {/* Single Primary Card Action Footer */}
                 <div className="profile-card-actions">
-                  <button
-                    className="profile-action-btn font-mono"
-                    title="Change username or avatar"
-                    onClick={(e) => openEditUsernameModal(profile, e)}
-                  >
-                    <FiEdit2 size={11} />
-                    <span>EDIT USER</span>
-                  </button>
-
-                  <button
-                    className="profile-action-btn font-mono"
-                    title="Upload photo from computer"
-                    onClick={(e) => openChangeAvatarModal(profile, 'upload', e)}
-                  >
-                    <FiUploadCloud size={12} />
-                    <span>UPLOAD PHOTO</span>
-                  </button>
-
                   {isManaging ? (
                     <button
                       className="delete-profile-btn font-mono"
@@ -476,19 +450,19 @@ const Profile = () => {
                       }}
                     >
                       <FiTrash2 size={12} />
-                      <span>TERMINATE</span>
+                      <span>TERMINATE OPERATOR</span>
                     </button>
                   ) : isActive ? (
-                    <button className="profile-action-btn profile-action-btn--active font-mono" disabled>
+                    <div className="profile-action-btn profile-action-btn--active font-mono">
                       <FiUserCheck size={13} />
-                      <span>[ ACTIVE SESSION ]</span>
-                    </button>
+                      <span>[ CURRENT ACTIVE SESSION ]</span>
+                    </div>
                   ) : (
                     <button
-                      className="profile-action-btn font-mono"
+                      className="profile-action-btn profile-action-btn--resume font-mono"
                       onClick={() => handleProfileSelect(profile)}
                     >
-                      <span>[ RESUME ]</span>
+                      <span>[ ACTIVATE SESSION ]</span>
                       <FiArrowRight size={12} />
                     </button>
                   )}
@@ -501,11 +475,11 @@ const Profile = () => {
           {profiles.length < 5 && (
             <div className="profile-card add-profile" onClick={() => openNewProfileModal('preset')}>
               <div className="add-container">
-                <span className="add-icon">+</span>
+                <FiPlus className="add-icon" />
               </div>
-              <div className="add-title font-mono">+ ADD OPERATOR USERNAME</div>
+              <div className="add-title font-mono">+ INITIALIZE OPERATOR</div>
               <p className="add-desc">
-                Register a new operator username with isolated discovery space and custom avatar.
+                Provision an isolated recommendation space with dedicated avatar &amp; preference weights.
               </p>
             </div>
           )}
