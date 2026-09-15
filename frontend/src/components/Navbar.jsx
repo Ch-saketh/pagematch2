@@ -29,16 +29,8 @@ const Navbar = () => {
       const active = storedProfiles.find((p) => p.id === selectedId);
       if (active) {
         setProfileName(active.name || "Reader");
-        if (active.avatar && active.avatar.includes("unsplash.com")) {
-          const cleanAvatar = `data:image/svg+xml;utf8,${encodeURIComponent(`
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" width="160" height="160">
-            <rect width="160" height="160" fill="#141413" />
-            <rect x="8" y="8" width="144" height="144" fill="none" stroke="#232320" stroke-width="2" />
-            <circle cx="80" cy="68" r="30" fill="none" stroke="#9be28b" stroke-width="3" />
-            <path d="M 38 132 Q 80 100 122 132" fill="none" stroke="#9be28b" stroke-width="3" />
-            <text x="80" y="150" fill="#888882" font-family="monospace" font-size="10" text-anchor="middle" letter-spacing="1.5">// ARCH</text>
-          </svg>
-          `)}`;
+        if (!active.avatar || active.avatar.includes("unsplash.com") || active.avatar.includes("// ARCH") || active.avatar.includes("data:image/svg+xml")) {
+          const cleanAvatar = '/avatars/avatar-1.svg';
           active.avatar = cleanAvatar;
           localStorage.setItem("profiles", JSON.stringify(storedProfiles));
           setProfileAvatar(cleanAvatar);

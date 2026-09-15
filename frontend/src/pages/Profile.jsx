@@ -36,35 +36,31 @@ const Profile = () => {
   const [uploadError, setUploadError] = useState(null);
   const [usernameError, setUsernameError] = useState(null);
 
-  // Developer architectural avatar identifiers
-  const makeAvatar = (tag, color) => `data:image/svg+xml;utf8,${encodeURIComponent(`
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" width="160" height="160">
-    <rect width="160" height="160" fill="#141413" />
-    <rect x="8" y="8" width="144" height="144" fill="none" stroke="#232320" stroke-width="2" />
-    <circle cx="80" cy="68" r="30" fill="none" stroke="${color}" stroke-width="3" />
-    <path d="M 38 132 Q 80 100 122 132" fill="none" stroke="${color}" stroke-width="3" />
-    <text x="80" y="150" fill="#888882" font-family="monospace" font-size="10" text-anchor="middle" letter-spacing="1.5">// ${tag}</text>
-  </svg>
-  `)}`;
-
+  // Rich pictured character avatars (manga, cyberpunk, modern portraits)
   const profilePics = [
-    makeAvatar('ARCH', '#9be28b'),
-    makeAvatar('SYS', '#60a5fa'),
-    makeAvatar('CORE', '#f43f5e'),
-    makeAvatar('DATA', '#eab308'),
-    makeAvatar('ALGO', '#a855f7'),
-    makeAvatar('NEURAL', '#06b6d4'),
-    makeAvatar('LEAD', '#f97316'),
-    makeAvatar('ROOT', '#10b981')
+    '/avatars/avatar-1.svg',
+    '/avatars/avatar-2.svg',
+    '/avatars/avatar-3.svg',
+    '/avatars/avatar-4.svg',
+    '/avatars/avatar-5.svg',
+    '/avatars/avatar-6.svg',
+    '/avatars/avatar-7.svg',
+    '/avatars/avatar-8.svg',
+    '/avatars/avatar-9.svg',
+    '/avatars/avatar-10.svg',
+    '/avatars/avatar-11.svg',
+    '/avatars/avatar-12.svg'
   ];
 
   useEffect(() => {
     let stored = JSON.parse(localStorage.getItem("profiles")) || [];
 
-    // Sanitize any legacy Unsplash images from stored profiles
+    // Sanitize any legacy Unsplash or line-art avatars from stored profiles
     let needsResave = false;
     stored = stored.map((p, idx) => {
-      if (typeof p.avatar === 'string' && p.avatar.includes('unsplash.com')) {
+      const isLegacyUnsplash = typeof p.avatar === 'string' && p.avatar.includes('unsplash.com');
+      const isLegacyLineArt = typeof p.avatar === 'string' && (p.avatar.includes('// ARCH') || p.avatar.includes('data:image/svg+xml'));
+      if (isLegacyUnsplash || isLegacyLineArt) {
         needsResave = true;
         return { ...p, avatar: profilePics[idx % profilePics.length] };
       }
@@ -84,7 +80,6 @@ const Profile = () => {
       };
       stored = [initialProfile];
       needsResave = true;
-      localStorage.setItem('selectedProfile', initialProfile.id);
     }
 
     if (needsResave) {
