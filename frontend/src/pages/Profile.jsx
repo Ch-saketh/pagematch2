@@ -346,7 +346,7 @@ const Profile = () => {
                 <div className="profile-card-top-bar font-mono">
                   <span className="op-tag">[{opTag}]</span>
                   <span className={`profile-status-pill ${isActive ? 'profile-status-pill--active' : 'profile-status-pill--standby'}`}>
-                    {isActive ? '● CURRENT SESSION' : '○ STANDBY'}
+                    {isActive ? '● ACTIVE OPERATOR' : '○ STANDBY'}
                   </span>
                 </div>
 
@@ -453,16 +453,19 @@ const Profile = () => {
                       <span>TERMINATE OPERATOR</span>
                     </button>
                   ) : isActive ? (
-                    <div className="profile-action-btn profile-action-btn--active font-mono">
-                      <FiUserCheck size={13} />
-                      <span>[ CURRENT ACTIVE SESSION ]</span>
-                    </div>
+                    <button
+                      className="profile-action-btn profile-action-btn--active-cta font-mono"
+                      onClick={() => navigate('/home')}
+                    >
+                      <span>ENTER DISCOVERY ARCHIVE</span>
+                      <FiArrowRight size={13} />
+                    </button>
                   ) : (
                     <button
                       className="profile-action-btn profile-action-btn--resume font-mono"
                       onClick={() => handleProfileSelect(profile)}
                     >
-                      <span>[ ACTIVATE SESSION ]</span>
+                      <span>SWITCH TO OPERATOR</span>
                       <FiArrowRight size={12} />
                     </button>
                   )}
