@@ -50,3 +50,25 @@ def create_user():
             print("Mongo create user notice:", e)
 
     return jsonify({"message": "User created successfully", "user_id": user_id}), 201
+
+
+@user_bp.route("/update-username", methods=["POST"])
+def update_username():
+    data = request.json or {}
+    old_username = data.get("old_username")
+    new_username = data.get("new_username")
+
+    if not new_username:
+        return jsonify({"error": "New username is required"}), 400
+
+    db = get_db()
+    if db is not None and old_username:
+        try:
+            db["users"].update_one(
+                {"username": old_username},
+                {"$set": {"username": new_username}}
+            )
+        except Exception as e:
+            print("Mongo update username notice:", e)
+
+    return jsonify({"message": "Username updated successfully"}), 200

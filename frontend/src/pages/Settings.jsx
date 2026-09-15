@@ -155,16 +155,23 @@ const Settings = () => {
               </div>
 
               <div className="form-group">
-                <label className="font-mono field-label">OPERATOR DISPLAY IDENTIFIER</label>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '6px' }}>
+                  <label className="font-mono field-label" style={{ marginBottom: 0 }}>OPERATOR USERNAME (DISPLAY NAME)</label>
+                  <span className="font-mono" style={{ fontSize: '10px', color: 'var(--accent)' }}>// PROFILE IDENTITY</span>
+                </div>
                 <input
                   type="text"
                   name="displayName"
+                  placeholder="Enter operator username (e.g. Saketh)..."
                   value={formData.displayName}
                   onChange={handleInputChange}
                   className="form-control font-mono"
                   maxLength="20"
                   required
                 />
+                <span className="font-mono" style={{ fontSize: '10px', color: 'var(--text-muted)', display: 'block', marginTop: '4px' }}>
+                  // Set or update your operator username across recommendations and session logs.
+                </span>
               </div>
 
               {/* Avatar Configuration */}

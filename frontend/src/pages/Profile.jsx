@@ -12,7 +12,8 @@ import {
   FiCamera,
   FiUserCheck,
   FiArrowRight,
-  FiCpu
+  FiCpu,
+  FiUserPlus
 } from 'react-icons/fi';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
@@ -23,6 +24,7 @@ import { processUserAvatar } from '../utils/imageHelper';
 const Profile = () => {
   const navigate = useNavigate();
   const fileInputRef = useRef(null);
+  const usernameInputRef = useRef(null);
   const [profiles, setProfiles] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
   const [isManaging, setIsManaging] = useState(false);
@@ -145,11 +147,30 @@ const Profile = () => {
     setUploadError(null);
     setUsernameError(null);
     setIsEditing(true);
+    setTimeout(() => {
+      usernameInputRef.current?.focus();
+    }, 60);
+  };
+
+  const openEditUsernameModal = (profile, e) => {
+    if (e) e.stopPropagation();
+    setEditingAvatarProfile(profile);
+    setNewProfileName(profile.name || '');
+    setSelectedPic(profile.avatar);
+    setAvatarSourceTab('preset');
+    setUploadError(null);
+    setUsernameError(null);
+    setIsEditing(true);
+    setTimeout(() => {
+      usernameInputRef.current?.focus();
+      usernameInputRef.current?.select();
+    }, 60);
   };
 
   const openChangeAvatarModal = (profile, tab = 'upload', e) => {
     if (e) e.stopPropagation();
     setEditingAvatarProfile(profile);
+    setNewProfileName(profile.name || '');
     setSelectedPic(profile.avatar);
     setAvatarSourceTab(tab);
     setUploadError(null);
@@ -160,12 +181,25 @@ const Profile = () => {
   const handleSaveProfile = async () => {
     if (!selectedPic) return;
 
-    // Case 1: Editing existing profile's avatar
+    // Case 1: Editing existing profile's avatar & username
     if (editingAvatarProfile) {
+      const finalName = newProfileName.trim() || editingAvatarProfile.name;
       const updated = profiles.map(p =>
-        p.id === editingAvatarProfile.id ? { ...p, avatar: selectedPic } : p
+        p.id === editingAvatarProfile.id ? { ...p, name: finalName, avatar: selectedPic } : p
       );
       saveProfilesToStorage(updated);
+      if (localStorage.getItem('selectedProfile') === editingAvatarProfile.id) {
+        localStorage.setItem("selectedProfileName", finalName);
+      }
+      try {
+        await fetch(`${API_BASE_URL}/update-username`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ old_username: editingAvatarProfile.name, new_username: finalName })
+        });
+      } catch {
+        // Local persistence continues
+      }
       setIsEditing(false);
       setEditingAvatarProfile(null);
       return;
@@ -353,31 +387,39 @@ const Profile = () => {
                     ) : (
                       <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                         <h2 className="profile-display-name">{profile.name}</h2>
-                        {isManaging && (
-                          <button
-                            className="edit-name-btn"
-                            title="Edit Name"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              startEditingName(profile);
-                            }}
-                          >
-                            <FiEdit2 size={12} />
-                          </button>
-                        )}
+                        <button
+                          className="edit-name-btn"
+                          title="Rename operator inline"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            startEditingName(profile);
+                          }}
+                        >
+                          <FiEdit2 size={10} />
+                          <span>RENAME</span>
+                        </button>
                       </div>
                     )}
 
                     <span className="profile-role-tag font-mono">// {roleTag}</span>
 
-                    {/* Explicit, directly visible Upload Photo & Change Avatar Buttons */}
+                    {/* Explicit, directly visible Username, Upload Photo & Change Avatar Buttons */}
                     <div className="profile-avatar-action-row">
+                      <button
+                        className="profile-username-action-pill font-mono"
+                        title="Add or update operator username"
+                        onClick={(e) => openEditUsernameModal(profile, e)}
+                      >
+                        <FiEdit2 size={10} />
+                        <span>USERNAME</span>
+                      </button>
+
                       <button
                         className="profile-upload-action-pill font-mono"
                         title="Upload your own photo from your computer"
                         onClick={(e) => openChangeAvatarModal(profile, 'upload', e)}
                       >
-                        <FiUploadCloud size={12} />
+                        <FiUploadCloud size={11} />
                         <span>UPLOAD PHOTO</span>
                       </button>
 
@@ -407,6 +449,15 @@ const Profile = () => {
 
                 {/* Card Action Footer */}
                 <div className="profile-card-actions">
+                  <button
+                    className="profile-action-btn font-mono"
+                    title="Change username or avatar"
+                    onClick={(e) => openEditUsernameModal(profile, e)}
+                  >
+                    <FiEdit2 size={11} />
+                    <span>EDIT USER</span>
+                  </button>
+
                   <button
                     className="profile-action-btn font-mono"
                     title="Upload photo from computer"
@@ -448,13 +499,13 @@ const Profile = () => {
 
           {/* Add Operator Card */}
           {profiles.length < 5 && (
-            <div className="profile-card add-profile" onClick={openNewProfileModal}>
+            <div className="profile-card add-profile" onClick={() => openNewProfileModal('preset')}>
               <div className="add-container">
                 <span className="add-icon">+</span>
               </div>
-              <div className="add-title font-mono">+ INITIALIZE OPERATOR</div>
+              <div className="add-title font-mono">+ ADD OPERATOR USERNAME</div>
               <p className="add-desc">
-                Provision an isolated recommendation space with dedicated avatar &amp; preference weights.
+                Register a new operator username with isolated discovery space and custom avatar.
               </p>
             </div>
           )}
@@ -464,6 +515,14 @@ const Profile = () => {
         <div className="profile-actions-bar">
           <button
             className="btn-editorial btn-editorial-primary font-mono"
+            onClick={() => openNewProfileModal('preset')}
+          >
+            <FiUserPlus size={13} />
+            <span>[ + ADD USERNAME / OPERATOR ]</span>
+          </button>
+
+          <button
+            className="btn-editorial font-mono"
             onClick={() => openNewProfileModal('upload')}
           >
             <FiUploadCloud size={13} />
@@ -493,13 +552,48 @@ const Profile = () => {
               <div className="editor-header">
                 <div>
                   <span className="mono-tag font-mono">
-                    {editingAvatarProfile ? `// OPERATOR: ${editingAvatarProfile.name}` : '// PROVISION OPERATOR'}
+                    {editingAvatarProfile ? `// OPERATOR: ${editingAvatarProfile.name}` : '// REGISTER OPERATOR'}
                   </span>
-                  <h2>{editingAvatarProfile ? 'Update Avatar' : 'Initialize Profile'}</h2>
+                  <h2>{editingAvatarProfile ? 'Edit Operator Username & Avatar' : 'Add New Operator Username'}</h2>
                 </div>
                 <button className="close-editor-btn" onClick={() => setIsEditing(false)}>
                   <FiX />
                 </button>
+              </div>
+
+              {/* OPERATOR USERNAME INPUT: Prominently Positioned at Top */}
+              <div className="name-input" style={{ marginBottom: '1.25rem' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '6px' }}>
+                  <label className="font-mono field-label" style={{ marginBottom: 0, color: 'var(--text-primary)', fontWeight: 600 }}>
+                    OPERATOR USERNAME {editingAvatarProfile ? '(RENAME OPERATOR)' : '(REQUIRED)'}
+                  </label>
+                  <span className="font-mono" style={{ fontSize: '10px', color: 'var(--accent)' }}>
+                    // USER IDENTIFIER
+                  </span>
+                </div>
+                <input
+                  ref={usernameInputRef}
+                  type="text"
+                  placeholder="Enter operator username (e.g. Saketh)..."
+                  value={newProfileName}
+                  onChange={(e) => {
+                    setNewProfileName(e.target.value);
+                    if (usernameError) setUsernameError(null);
+                  }}
+                  maxLength="20"
+                  className="font-mono"
+                  style={{
+                    backgroundColor: '#161614',
+                    border: '1px solid var(--border-strong)',
+                    fontSize: '14px',
+                    fontWeight: '600'
+                  }}
+                  required
+                />
+                <span className="font-mono" style={{ fontSize: '10px', color: 'var(--text-muted)', display: 'block', marginTop: '4px' }}>
+                  Your username personalizes your discovery feeds, reading vault, and model embeddings.
+                </span>
+                {usernameError && <div className="username-error font-mono">{usernameError}</div>}
               </div>
 
               {/* Live Preview of Current Choice */}
@@ -602,33 +696,16 @@ const Profile = () => {
                 </div>
               )}
 
-              {/* Name Input (only for creating new profile) */}
-              {!editingAvatarProfile && (
-                <div className="name-input">
-                  <label className="font-mono field-label">OPERATOR IDENTIFIER</label>
-                  <input
-                    type="text"
-                    placeholder="Enter operator name..."
-                    value={newProfileName}
-                    onChange={(e) => setNewProfileName(e.target.value)}
-                    maxLength="20"
-                    className="font-mono"
-                  />
-                </div>
-              )}
-
-              {usernameError && <div className="username-error font-mono">{usernameError}</div>}
-
               <div className="editor-buttons font-mono">
                 <button className="btn-editorial" onClick={() => setIsEditing(false)}>
                   [ CANCEL ]
                 </button>
                 <button
-                  className="btn-editorial btn-editorial-primary"
+                  className="btn-editorial btn-editorial-primary font-mono"
                   onClick={handleSaveProfile}
-                  disabled={!selectedPic || (!editingAvatarProfile && !newProfileName.trim())}
+                  disabled={!selectedPic || !newProfileName.trim()}
                 >
-                  {editingAvatarProfile ? '[ SAVE AVATAR ]' : '[ INITIALIZE PROFILE ]'}
+                  {editingAvatarProfile ? '[ SAVE USERNAME & AVATAR ]' : '[ CREATE OPERATOR WITH USERNAME ]'}
                 </button>
               </div>
             </div>
