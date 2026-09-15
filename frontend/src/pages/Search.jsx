@@ -6,6 +6,7 @@ import Footer from "../components/Footer";
 import API_BASE_URL from "../config";
 import { FiX, FiArrowUpRight, FiBookmark } from "react-icons/fi";
 import { getEditorialCover } from "../utils/coverHelper";
+import { recordBookClick } from "../utils/interactionTracker";
 import "../styles/Search.css";
 
 const Search = () => {
@@ -76,6 +77,7 @@ const Search = () => {
   }, [query]);
 
   const handleOpenBook = async (book) => {
+    recordBookClick(book, 'search');
     setSelectedBook(book);
     setLoadingSimilar(true);
     setSimilarBooks([]);

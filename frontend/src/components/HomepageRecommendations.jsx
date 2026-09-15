@@ -3,6 +3,7 @@ import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 import API_BASE_URL from '../config';
 import { getEditorialCover } from '../utils/coverHelper';
+import { recordBookClick } from '../utils/interactionTracker';
 import '../styles/HomepageRecommendations.css';
 
 const EditorialRow = ({ indexStr, title, items, onSelect }) => {
@@ -45,6 +46,7 @@ const EditorialRow = ({ indexStr, title, items, onSelect }) => {
               key={item.book_id || idx}
               className="pm-book-card"
               onClick={() => onSelect(item)}
+              title={`Click to shift recommendations to "${item.title}"`}
             >
               <div className="pm-card-cover-wrap">
                 <img
@@ -63,7 +65,7 @@ const EditorialRow = ({ indexStr, title, items, onSelect }) => {
                 <h3 className="pm-card-title">{item.title}</h3>
                 <div className="pm-card-meta-row">
                   <span className="pm-card-rating">★ {item.rating || '4.8'}</span>
-                  <span>[RECORD →]</span>
+                  <span style={{ color: 'var(--accent)', fontSize: '9px', fontWeight: 600 }}>[INFER →]</span>
                 </div>
               </div>
             </article>
@@ -99,7 +101,13 @@ const HomepageRecommendations = () => {
   }, []);
 
   const handleSelectBook = (book) => {
-    navigate(`/search?q=${encodeURIComponent(book.title)}`);
+    recordBookClick(book, 'cluster_select');
+    const el = document.getElementById('because-you-clicked-section');
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' });
+    } else {
+      navigate(`/search?q=${encodeURIComponent(book.title)}`);
+    }
   };
 
   if (loading && clusters.length === 0) {

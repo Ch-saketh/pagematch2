@@ -5,6 +5,7 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import API_BASE_URL from '../config';
 import { getEditorialCover } from '../utils/coverHelper';
+import { recordBookClick } from '../utils/interactionTracker';
 import '../styles/Manga.css';
 import '../styles/HomepageRecommendations.css';
 
@@ -105,6 +106,7 @@ const Manga = () => {
   }, []);
 
   const handleSelect = (manga) => {
+    recordBookClick(manga, 'manga_catalog');
     navigate(`/search?q=${encodeURIComponent(manga.title)}`);
   };
 

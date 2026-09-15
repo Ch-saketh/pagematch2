@@ -3,6 +3,7 @@ import { FiArrowUpRight, FiBookOpen } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import API_BASE_URL from "../config";
 import { getEditorialCover } from "../utils/coverHelper";
+import { recordBookClick } from "../utils/interactionTracker";
 import "../styles/Banner.css";
 
 const Banner = () => {
@@ -32,6 +33,22 @@ const Banner = () => {
   const rating = featured?.averageRating ? `★ ${featured.averageRating}` : "★ 4.5";
   const summary = featured?.description || "A masterwork of speculative fiction exploring social conditioning, technological dominance, and human identity in a structured society.";
   const coverUrl = featured?.thumbnail || getEditorialCover(title, author);
+
+  const handleHeroExplore = () => {
+    recordBookClick({
+      title,
+      authors: [author],
+      thumbnail: coverUrl,
+      categories: [category],
+      averageRating: rating.replace('★ ', '')
+    }, 'hero_explore');
+    const el = document.getElementById('because-you-clicked-section');
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' });
+    } else {
+      navigate(`/search?q=${encodeURIComponent(title)}`);
+    }
+  };
 
   return (
     <section className="pm-hero-section">
@@ -72,9 +89,10 @@ const Banner = () => {
           <div className="pm-hero-actions">
             <button
               className="btn-editorial btn-editorial-primary"
-              onClick={() => navigate(`/search?q=${encodeURIComponent(title)}`)}
+              onClick={handleHeroExplore}
+              title="Compute real-time recommendations for this masterpiece"
             >
-              <span>EXPLORE THIS BOOK</span>
+              <span>EXPLORE RECOMMENDATIONS</span>
               <FiArrowUpRight />
             </button>
             <button
@@ -88,7 +106,7 @@ const Banner = () => {
         </div>
 
         {/* Right Column: Architectural Framed Cover */}
-        <div className="pm-hero-visual">
+        <div className="pm-hero-visual" onClick={handleHeroExplore} style={{ cursor: 'pointer' }}>
           <div className="pm-hero-cover-frame">
             <img
               src={coverUrl}
@@ -98,7 +116,7 @@ const Banner = () => {
               }}
             />
             <div className="pm-cover-caption">
-              <span className="pm-caption-meta">[ENGINE MATCH]</span>
+              <span className="pm-caption-meta">[CLICK TO INFER]</span>
               <span className="mono-tag">{rating}</span>
             </div>
           </div>

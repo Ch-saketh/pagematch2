@@ -2,10 +2,12 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import Navbar from "../components/Navbar";
 import Banner from "../components/Banner";
+import BecauseYouClicked from "../components/BecauseYouClicked";
 import HomepageRecommendations from "../components/HomepageRecommendations";  
 import Footer from "../components/Footer";
 import API_BASE_URL from "../config";
 import { getEditorialCover } from "../utils/coverHelper";
+import { recordBookClick } from "../utils/interactionTracker";
 import "../styles/Home.css";
 
 const Home = () => {
@@ -44,11 +46,16 @@ const Home = () => {
       <main className="pm-main-content">
         <Banner />
 
+        {/* Real-Time "Because You Clicked / Explored" Section (Adapts on every click) */}
+        <div id="because-you-clicked-section">
+          <BecauseYouClicked />
+        </div>
+
         {/* Continue Reading Shelf */}
         <section className="pm-featured-section">
           <div className="pm-section-header">
             <div className="pm-section-title-group">
-              <span className="pm-section-eyebrow">01 // READING PIPELINE</span>
+              <span className="pm-section-eyebrow">02 // READING PIPELINE</span>
               <h2 className="pm-section-title">In Progress & Rapid Access</h2>
             </div>
             <span className="mono-tag font-mono">[ACTIVE SHELF]</span>
@@ -64,7 +71,12 @@ const Home = () => {
                 <article 
                   className="pm-trending-card" 
                   key={item.id || idx}
-                  onClick={() => navigate(`/search?q=${encodeURIComponent(item.title)}`)}
+                  onClick={() => {
+                    recordBookClick(item, 'pipeline_shelf');
+                    const el = document.getElementById('because-you-clicked-section');
+                    if (el) el.scrollIntoView({ behavior: 'smooth' });
+                  }}
+                  title={`Click to shift recommendations to "${item.title}"`}
                 >
                   <div className="pm-trending-thumb-wrap">
                     <img

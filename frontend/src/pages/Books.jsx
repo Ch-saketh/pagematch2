@@ -5,6 +5,7 @@ import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 import API_BASE_URL from '../config';
 import { getEditorialCover } from '../utils/coverHelper';
+import { recordBookClick } from '../utils/interactionTracker';
 import '../styles/Books.css';
 import '../styles/HomepageRecommendations.css';
 
@@ -105,6 +106,7 @@ const Books = () => {
   }, []);
 
   const handleBookSelect = (book) => {
+    recordBookClick(book, 'books_catalog');
     navigate(`/search?q=${encodeURIComponent(book.title)}`);
   };
 
