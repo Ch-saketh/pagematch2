@@ -34,7 +34,21 @@ class BookModelEngine:
         
         print(f"📦 Loading book recommendation model from: {model_path}")
         if not os.path.exists(model_path):
-            raise FileNotFoundError(f"Model file not found at {model_path}")
+            print(f"⚡ Model file not found locally at {model_path}. Downloading from Hugging Face (cs22/book-engine)...")
+            os.makedirs(os.path.dirname(model_path), exist_ok=True)
+            hf_url = "https://huggingface.co/cs22/book-engine/resolve/main/book_engine.pkl"
+            import requests
+            try:
+                with requests.get(hf_url, stream=True, timeout=600) as r:
+                    r.raise_for_status()
+                    with open(model_path, 'wb') as f:
+                        for chunk in r.iter_content(chunk_size=1024 * 1024 * 8):
+                            if chunk:
+                                f.write(chunk)
+                print("✅ Model downloaded successfully from Hugging Face!")
+            except Exception as dl_err:
+                print(f"❌ Failed to download model: {dl_err}")
+                raise FileNotFoundError(f"Model file could not be downloaded or found at {model_path}")
 
         with open(model_path, 'rb') as f:
             engine = pickle.load(f)
