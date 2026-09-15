@@ -378,18 +378,20 @@
 
 .pm-card-heart-btn {
   position: absolute;
-  top: 6px;
-  right: 6px;
+  top: 8px;
+  right: 8px;
   width: 26px;
   height: 26px;
   border-radius: 50%;
   background: rgba(10, 10, 9, 0.75);
-  backdrop-filter: blur(2px);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
   border: 1px solid var(--border);
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  z-index: 3;
   transition: all var(--transition-fast);
 }
 
@@ -398,17 +400,31 @@
   transform: scale(1.1);
 }
 
-.pm-rec-book-card .pm-card-badge {
+.pm-sim-score-badge {
   position: absolute;
-  bottom: 6px;
-  left: 6px;
+  top: 8px;
+  left: 8px;
+  bottom: auto;
+  right: auto;
+  width: auto;
+  max-width: calc(100% - 46px);
+  height: auto;
   background: rgba(10, 10, 9, 0.85);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
   color: var(--accent);
+  font-family: var(--font-mono);
   font-size: 8.5px;
+  font-weight: 600;
   letter-spacing: var(--tracking-mono);
-  padding: 2px 5px;
+  padding: 3px 6px;
   border-radius: 2px;
-  border: 1px solid rgba(155, 226, 139, 0.25);
+  border: 1px solid rgba(155, 226, 139, 0.3);
+  z-index: 2;
+  pointer-events: none;
+  white-space: nowrap;
+  line-height: 1;
+  display: inline-block;
 }
 
 .pm-rec-book-card .pm-card-body {

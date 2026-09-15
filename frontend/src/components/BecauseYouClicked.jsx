@@ -226,7 +226,7 @@ const BecauseYouClicked = () => {
                           e.target.src = getEditorialCover(rec.title, recAuthor);
                         }}
                       />
-                      <span className="pm-card-badge font-mono">{score}</span>
+                      <span className="pm-sim-score-badge font-mono">{score}</span>
                       
                       <button
                         className={`pm-card-heart-btn ${isLiked ? 'liked' : ''}`}
