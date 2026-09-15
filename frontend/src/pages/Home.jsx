@@ -1,64 +1,108 @@
-
+import React, { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
-import React, { useEffect } from "react";
 import Navbar from "../components/Navbar";
 import Banner from "../components/Banner";
 import HomepageRecommendations from "../components/HomepageRecommendations";  
+import Footer from "../components/Footer";
+import API_BASE_URL from "../config";
+import { getEditorialCover } from "../utils/coverHelper";
 import "../styles/Home.css";
 
 const Home = () => {
   const navigate = useNavigate();
+  const [pipeline, setPipeline] = useState([]);
+  const [loadingPipeline, setLoadingPipeline] = useState(true);
 
   useEffect(() => {
     if (!localStorage.getItem('selectedProfile')) {
-      navigate('/Profile');
+      localStorage.setItem('selectedProfile', 'user-default');
     }
+
+    const fetchPipeline = async () => {
+      try {
+        const res = await fetch(`${API_BASE_URL}/reading-pipeline`);
+        if (res.ok) {
+          const data = await res.json();
+          if (data.pipeline && data.pipeline.length > 0) {
+            setPipeline(data.pipeline);
+          }
+        }
+      } catch (err) {
+        console.error("Failed to load reading pipeline", err);
+      } finally {
+        setLoadingPipeline(false);
+      }
+    };
+
+    fetchPipeline();
   }, [navigate]);
 
-  const trendingContent = [
-    { id: 1, title: "Demon Slayer", type: "M", progress: 35, image: "https://wallpapercave.com/wp/wp11053404.jpg" },
-    { id: 2, title: "Jujutsu Kaisen", type: "N", progress: 0, image: "https://wallpapers.com/images/hd/gojo-satoru-skyscrapers-jujutsu-kaisen-iphone-2ok7ncrjsl54g5jk.jpg" },
-    { id: 3, title: "Attack on Titan", type: "M", progress: 70, image: "https://cdn.wallpapersafari.com/0/42/2jGTiK.jpg" },
-    { id: 4, title: "Death Note", type: "C", progress: 0, image: "https://wallpapercave.com/wp/wp7035224.jpg" },
-    { id: 5, title: "Chainsaw Man", type: "H", progress: 15, image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSX598QzsoGxex1OMQNugCwZEv0XW9akDs3Rg&s" }
-  ];
-
   return (
-    <div className="page-container">
-      {/* Keep the Netflix-style navbar */}
+    <div className="pm-page-container">
       <Navbar />
 
-      <main className="main-content">
-        {/* Banner Section */}
+      <main className="pm-main-content">
         <Banner />
 
-        {/* Trending Now - Local Static Cards */}
-        <section className="content-section">
-          <h2 className="section-title">Trending Now</h2>
-          <div className="card-grid">
-            {trendingContent.map(item => (
-              <div className="content-card" key={item.id}>
-                <div className={`content-badge ${item.type === 'N' ? 'new' : 
-                                item.type === 'C' ? 'classic' : 
-                                item.type === 'H' ? 'hot' : 'manga'}`}>
-                  {item.type}
-                </div>
-                {item.progress > 0 && (
-                  <div className="progress-bar" style={{ width: `${item.progress}%` }}></div>
-                )}
-                <div 
-                  className="card-image"
-                  style={{ backgroundImage: `url(${item.image})` }}
-                ></div>
-                <h3 className="card-title">{item.title}</h3>
-              </div>
-            ))}
+        {/* Continue Reading Shelf */}
+        <section className="pm-featured-section">
+          <div className="pm-section-header">
+            <div className="pm-section-title-group">
+              <span className="pm-section-eyebrow">01 // READING PIPELINE</span>
+              <h2 className="pm-section-title">In Progress & Rapid Access</h2>
+            </div>
+            <span className="mono-tag font-mono">[ACTIVE SHELF]</span>
+          </div>
+
+          <div className="pm-trending-grid">
+            {pipeline.map((item, idx) => {
+              const author = item.authors?.[0] || 'Unknown Author';
+              const rating = item.averageRating ? `★ ${item.averageRating}` : '★ 4.5';
+              const coverSrc = item.thumbnail || getEditorialCover(item.title, author);
+
+              return (
+                <article 
+                  className="pm-trending-card" 
+                  key={item.id || idx}
+                  onClick={() => navigate(`/search?q=${encodeURIComponent(item.title)}`)}
+                >
+                  <div className="pm-trending-thumb-wrap">
+                    <img
+                      src={coverSrc}
+                      alt={item.title}
+                      className="pm-trending-thumb"
+                      loading="lazy"
+                      onError={(e) => {
+                        e.target.src = getEditorialCover(item.title, author);
+                      }}
+                    />
+                    <span className="pm-trending-tag">{item.categories?.[0] || "SHELF"}</span>
+                    {idx === 0 && (
+                      <div className="pm-progress-strip" style={{ width: `75%` }}></div>
+                    )}
+                    {idx === 1 && (
+                      <div className="pm-progress-strip" style={{ width: `30%` }}></div>
+                    )}
+                  </div>
+
+                  <div className="pm-trending-body">
+                    <h3 className="pm-trending-title">{item.title}</h3>
+                    <div className="pm-trending-meta">
+                      <span>{author}</span>
+                      <span>{rating}</span>
+                    </div>
+                  </div>
+                </article>
+              );
+            })}
           </div>
         </section>
 
-        {/* AI Model Recommendations - Dynamic Sections like Netflix Rows */}
+        {/* Dynamic Categorized Carousels from ML Model */}
         <HomepageRecommendations />
       </main>
+
+      <Footer />
     </div>
   );
 };

@@ -1,146 +1,142 @@
-import React, { useState, useEffect } from 'react';
-import { FiPlay, FiPlus, FiChevronRight } from 'react-icons/fi';
+import React, { useEffect, useState, useRef } from 'react';
+import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
+import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
+import API_BASE_URL from '../config';
+import { getEditorialCover } from '../utils/coverHelper';
 import '../styles/Manga.css';
+import '../styles/HomepageRecommendations.css';
 
-const Manga = () => {
-  const [featuredManga, setFeaturedManga] = useState(null);
-  const [sections, setSections] = useState([]);
+const MangaRow = ({ section, onSelect }) => {
+  const scrollRef = useRef(null);
 
-  // Dummy manga data - replace with API calls later
-  useEffect(() => {
-    // Featured manga (randomized selection)
-    const featured = {
-      id: 'manga-101',
-      title: 'Demon Slayer: Kimetsu no Yaiba',
-      description: 'Tanjiro Kamado, a kindhearted boy who sells charcoal for a living, finds his family slaughtered by a demon. To make matters worse, his younger sister Nezuko has been transformed into a demon herself.',
-      bannerImage: 'https://wallpapercave.com/wp/wp8973826.jpg',
-      genres: ['Action', 'Demons', 'Historical'],
-      rating: 4.9,
-      chapters: 205,
-      status: 'Completed'
-    };
-    setFeaturedManga(featured);
-
-    // Manga sections
-    setSections([
-      {
-        title: '⭐ Trending Manga',
-        data: [
-          { id: 'manga-102', title: 'Jujutsu Kaisen', coverImage: 'https://wallpapercave.com/wp/wp10953682.jpg', genre: 'Supernatural', rating: 4.8 },
-          { id: 'manga-103', title: 'Chainsaw Man', coverImage: 'https://wallpapercave.com/wp/wp8650334.jpg', genre: 'Action', rating: 4.7 },
-          { id: 'manga-104', title: 'Spy x Family', coverImage: 'https://wallpapercave.com/wp/wp11159148.jpg', genre: 'Comedy', rating: 4.6 },
-          { id: 'manga-105', title: 'One Piece', coverImage: 'https://cdn.myanimelist.net/images/manga/2/253146.jpg', genre: 'Adventure', rating: 4.9 },
-          { id: 'manga-106', title: 'Attack on Titan', coverImage: 'https://cdn.myanimelist.net/images/manga/2/37846.jpg', genre: 'Dark Fantasy', rating: 4.8 }
-        ]
-      },
-      {
-        title: '📚 Editor\'s Picks',
-        data: [
-          { id: 'manga-107', title: 'Berserk', coverImage: 'https://cdn.myanimelist.net/images/manga/1/157897.jpg', genre: 'Dark Fantasy', rating: 4.9 },
-          { id: 'manga-108', title: 'Vinland Saga', coverImage: 'https://cdn.myanimelist.net/images/manga/2/188925.jpg', genre: 'Historical', rating: 4.8 },
-          { id: 'manga-109', title: 'Monster', coverImage: 'https://wallpapercave.com/wp/wp3084750.jpg', genre: 'Psychological', rating: 4.9 }
-        ]
-      },
-      {
-        title: '🔥 Most Popular',
-        data: [
-          { id: 'manga-110', title: 'Death Note', coverImage: 'https://wallpapercave.com/wp/wp14132784.jpg', genre: 'Thriller', rating: 4.8 },
-          { id: 'manga-111', title: 'Tokyo Ghoul', coverImage: 'https://wallpapercave.com/wp/wp8039243.jpg', genre: 'Horror', rating: 4.3 },
-          { id: 'manga-112', title: 'My Hero Academia', coverImage: 'https://wallpapercave.com/wp/wp4983068.jpg', genre: 'Superhero', rating: 4.5 }
-        ]
-      },
-      {
-        title: '🎨 Top Art Style',
-        data: [
-          { id: 'manga-113', title: 'Vagabond', coverImage: 'https://cdn.myanimelist.net/images/manga/2/181787.jpg', genre: 'Historical', rating: 4.9 },
-          { id: 'manga-114', title: 'Blame!', coverImage: 'https://cdn.myanimelist.net/images/manga/3/157897.jpg', genre: 'Cyberpunk', rating: 4.4 },
-          { id: 'manga-115', title: 'One Punch Man', coverImage: 'https://cdn.myanimelist.net/images/manga/3/207244.jpg', genre: 'Action', rating: 4.6 }
-        ]
-      },
-      {
-        title: '🧠 Psychological Thrillers',
-        data: [
-          { id: 'manga-116', title: 'Oyasumi Punpun', coverImage: 'https://cdn.myanimelist.net/images/manga/5/163238.jpg', genre: 'Drama', rating: 4.8 },
-          { id: 'manga-117', title: '20th Century Boys', coverImage: 'https://cdn.myanimelist.net/images/manga/3/54525.jpg', genre: 'Mystery', rating: 4.7 },
-          { id: 'manga-118', title: 'Parasyte', coverImage: 'https://cdn.myanimelist.net/images/manga/1/145431.jpg', genre: 'Sci-Fi', rating: 4.4 }
-        ]
-      }
-    ]);
-  }, []);
-
-  const handleReadNow = (mangaId) => {
-    console.log(`Reading manga ${mangaId}`);
-    // Navigate to reader page
+  const handleScroll = (dir) => {
+    if (scrollRef.current) {
+      const amount = scrollRef.current.clientWidth * 0.75;
+      scrollRef.current.scrollTo({
+        left: dir === 'left' ? scrollRef.current.scrollLeft - amount : scrollRef.current.scrollLeft + amount,
+        behavior: 'smooth'
+      });
+    }
   };
-
-  const handleAddToList = (mangaId) => {
-    console.log(`Added manga ${mangaId} to list`);
-    // Add to user's list
-  };
-
-  if (!featuredManga) return <div className="loading">Loading...</div>;
 
   return (
-    <div className="manga-page">
-      {/* Integrated Navbar */}
-      <Navbar />
-
-      {/* Featured Manga Banner */}
-      <div 
-        className="featured-banner"
-        style={{ backgroundImage: `linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.3) 100%), url(${featuredManga.bannerImage})` }}
-      >
-        <div className="featured-content">
-          <h1 className="featured-title">{featuredManga.title}</h1>
-          <p className="featured-description">{featuredManga.description}</p>
-          <div className="featured-meta">
-            <span>{featuredManga.rating} ★</span>
-            <span>{featuredManga.chapters} Chapters</span>
-            <span>{featuredManga.status}</span>
-          </div>
-          <div className="featured-buttons">
-            <button className="btn btn-primary" onClick={() => handleReadNow(featuredManga.id)}>
-              <FiPlay /> Read Now
-            </button>
-            <button className="btn btn-secondary" onClick={() => handleAddToList(featuredManga.id)}>
-              <FiPlus /> My Manga List
-            </button>
-          </div>
+    <div className="pm-row-wrapper">
+      <div className="pm-row-header">
+        <div className="pm-row-title-group">
+          <span className="pm-row-meta-eyebrow">{section.indexStr} // GRAPHIC & ILLUSTRATED INDEX</span>
+          <h2 className="pm-row-title">{section.title}</h2>
+        </div>
+        <div className="pm-row-controls">
+          <button className="pm-scroll-btn" onClick={() => handleScroll('left')} aria-label="Scroll left">
+            <FiChevronLeft />
+          </button>
+          <button className="pm-scroll-btn" onClick={() => handleScroll('right')} aria-label="Scroll right">
+            <FiChevronRight />
+          </button>
         </div>
       </div>
 
-      {/* Manga Recommendation Rows */}
-      <div className="manga-sections">
-        {sections.map((section, index) => (
-          <div key={index} className="section">
-            <h2 className="section-title">{section.title}</h2>
-            <div className="manga-row">
-              {section.data.map((manga) => (
-                <div key={manga.id} className="manga-card">
-                  <div 
-                    className="manga-cover"
-                    style={{ backgroundImage: `url(${manga.coverImage})` }}
-                  >
-                    <div className="manga-hover-info">
-                      <h3>{manga.title}</h3>
-                      <p>{manga.genre} • {manga.rating} ★</p>
-                      <div className="hover-buttons">
-                        <button onClick={() => handleReadNow(manga.id)}>
-                          <FiPlay /> Read
-                        </button>
-                        <button onClick={() => handleAddToList(manga.id)}>
-                          <FiPlus /> List
-                        </button>
-                      </div>
-                    </div>
-                  </div>
+      <div className="pm-carousel-track" ref={scrollRef}>
+        {section.items.map((manga) => {
+          const author = manga.authors?.[0] || 'Unknown Author';
+          const coverUrl = manga.thumbnail || getEditorialCover(manga.title, author);
+
+          return (
+            <article
+              key={manga.id}
+              className="pm-book-card"
+              onClick={() => onSelect(manga)}
+            >
+              <div className="pm-card-cover-wrap">
+                <img
+                  src={coverUrl}
+                  alt={manga.title}
+                  className="pm-card-cover"
+                  loading="lazy"
+                  onError={(e) => {
+                    e.target.src = getEditorialCover(manga.title, author);
+                  }}
+                />
+                <span className="pm-card-badge">{manga.categories?.[0] || 'COMICS'}</span>
+              </div>
+
+              <div className="pm-card-body">
+                <h3 className="pm-card-title">{manga.title}</h3>
+                <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', marginBottom: '0.5rem' }}>
+                  {author}
+                </p>
+                <div className="pm-card-meta-row">
+                  <span className="pm-card-rating">★ {manga.averageRating || '4.8'}</span>
+                  <span>[RECORD →]</span>
                 </div>
-              ))}
-            </div>
-          </div>
-        ))}
+              </div>
+            </article>
+          );
+        })}
       </div>
+    </div>
+  );
+};
+
+const Manga = () => {
+  const navigate = useNavigate();
+  const [sections, setSections] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchManga = async () => {
+      try {
+        const res = await fetch(`${API_BASE_URL}/catalog/manga`);
+        if (res.ok) {
+          const data = await res.json();
+          if (data.sections && data.sections.length > 0) {
+            setSections(data.sections);
+          }
+        }
+      } catch (err) {
+        console.error("Failed to load manga catalog", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchManga();
+  }, []);
+
+  const handleSelect = (manga) => {
+    navigate(`/search?q=${encodeURIComponent(manga.title)}`);
+  };
+
+  return (
+    <div className="pm-manga-page">
+      <Navbar />
+
+      <section className="pm-manga-hero">
+        <div className="pm-manga-hero-content">
+          <span className="mono-tag font-mono" style={{ marginBottom: '1rem' }}>
+            // 01 · GRAPHIC & ILLUSTRATED
+          </span>
+          <h1 className="pm-hero-title">Serialized Works & Graphic Serials</h1>
+          <p className="pm-hero-summary">
+            Curated archive of visual narratives, indexed directly from the cs22/book-engine ML model repository.
+          </p>
+        </div>
+      </section>
+
+      <section className="pm-manga-sections">
+        {loading && sections.length === 0 ? (
+          <div style={{ padding: '3rem var(--container-pad)', fontFamily: 'var(--font-mono)', color: 'var(--text-muted)' }}>
+            // QUERYING CS22/BOOK-ENGINE GRAPHIC NOVEL CATALOG...
+          </div>
+        ) : (
+          sections.map((sec, idx) => (
+            <MangaRow key={idx} section={sec} onSelect={handleSelect} />
+          ))
+        )}
+      </section>
+
+      <Footer />
     </div>
   );
 };

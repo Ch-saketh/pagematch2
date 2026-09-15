@@ -1,52 +1,244 @@
-/* src/index.css */
+/* src/styles/index.css - Editorial Architectural Design System (saketh-dev specification) */
 
-html,
-body {
+:root {
+  /* ==================================================
+     COLOR SYSTEM (Dark-First, Warm & Editorial)
+     ================================================== */
+  --background: #0a0a09;
+  --surface: #131413;
+  --surface-subtle: #191b19;
+  --surface-interactive: #222522;
+  --surface-elevated: #2b2e2b;
+
+  /* Typography Colors */
+  --text-primary: #e8e6df;       /* Warm off-white, 13.5:1 on background (AAA) */
+  --text-secondary: #a5a39c;     /* Muted warm gray, 7.4:1 on background (AAA) */
+  --text-muted: #72706a;         /* Accessible dark gray, 4.5:1 on background (AA) */
+
+  /* Accent (Restrained Developer Green) */
+  --accent: #9be28b;             /* 11.2:1 contrast against #0a0a09 */
+  --accent-hover: #b1eda3;
+  --accent-subtle: rgba(155, 226, 139, 0.12);
+  --accent-glow: rgba(155, 226, 139, 0.25);
+
+  /* Secondary Accent (Warm Gold/Amber) */
+  --amber: #f4d06f;
+  --amber-subtle: rgba(244, 208, 111, 0.12);
+
+  /* Borders & Rules */
+  --border: rgba(232, 230, 223, 0.08);
+  --border-subtle: rgba(232, 230, 223, 0.04);
+  --border-strong: rgba(232, 230, 223, 0.16);
+  --border-focus: #9be28b;
+
+  /* ==================================================
+     TYPOGRAPHY SYSTEM
+     ================================================== */
+  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-display: var(--font-sans);
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+  /* Sizes */
+  --text-xs: 0.75rem;          /* 12px */
+  --text-sm: 0.875rem;         /* 14px */
+  --text-base: 1rem;           /* 16px */
+  --text-lg: 1.125rem;         /* 18px */
+  --text-xl: 1.35rem;          /* 21.6px */
+  --text-2xl: 1.75rem;         /* 28px */
+  --text-3xl: 2.25rem;         /* 36px */
+  --text-4xl: clamp(2.5rem, 5vw, 3.5rem);
+
+  /* Weights */
+  --font-regular: 400;
+  --font-medium: 500;
+  --font-semibold: 600;
+  --font-bold: 700;
+
+  /* Line Heights */
+  --line-height-tight: 1.15;
+  --line-height-heading: 1.25;
+  --line-height-normal: 1.6;
+
+  /* Letter Spacing */
+  --tracking-tighter: -0.035em;
+  --tracking-tight: -0.02em;
+  --tracking-normal: 0;
+  --tracking-mono: 0.04em;
+  --tracking-wide: 0.08em;
+
+  /* ==================================================
+     SPACING & LAYOUT
+     ================================================== */
+  --container-max: 1380px;
+  --container-pad: clamp(1.25rem, 4vw, 2.5rem);
+
+  /* ==================================================
+     RADIUS (Minimal, Architectural, Never Rounded Capsules)
+     ================================================== */
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+
+  /* ==================================================
+     MOTION
+     ================================================== */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-fast: 140ms var(--ease-out);
+  --transition-normal: 240ms var(--ease-out);
+
+  /* Elevation */
+  --shadow-subtle: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-pop: 0 8px 24px -4px rgba(0, 0, 0, 0.6);
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
-  background-color: #000;
-  color: white;
-  font-family: 'Helvetica Neue', Arial, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+  color-scheme: dark;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  line-height: var(--line-height-normal);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  font-weight: var(--font-bold);
+  letter-spacing: var(--tracking-tight);
+  color: var(--text-primary);
 }
 
 a {
   color: inherit;
   text-decoration: none;
+  transition: color var(--transition-fast);
 }
 
-* {
-  box-sizing: border-box;
-}
-body {
-  overflow-x: hidden;  /* Prevents horizontal scrolling */
+button, input, textarea, select {
+  font-family: inherit;
 }
 
-.book-row::-webkit-scrollbar {
-  height: 0px; /* Hide scrollbar */
-}
-.book-row {
-  white-space: nowrap;
-  overflow-x: scroll;
-  overflow-y: hidden;
-  scroll-behavior: smooth;
-  padding: 10px 0;
-}
-/* Hide horizontal scrollbar globally */
-body {
-  margin: 0;
-  padding: 0;
-  overflow-x: hidden;
-}
-body {
-  margin: 0;
-  overflow-x: hidden;
-  font-family: Arial, sans-serif;
+/* Monospace Utilities */
+.font-mono {
+  font-family: var(--font-mono);
+  letter-spacing: var(--tracking-mono);
 }
 
+.mono-tag {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: var(--tracking-mono);
+  color: var(--accent);
+  background: var(--accent-subtle);
+  border: 1px solid rgba(155, 226, 139, 0.2);
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.mono-tag-subtle {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: var(--tracking-mono);
+  color: var(--text-secondary);
+  background: var(--surface-subtle);
+  border: 1px solid var(--border);
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+  display: inline-flex;
+  align-items: center;
+}
+
+/* Architectural Card Utility */
+.editorial-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  transition: border-color var(--transition-normal), transform var(--transition-normal);
+}
+
+.editorial-card:hover {
+  border-color: var(--border-strong);
+}
+
+/* Minimalist Button Utilities */
+.btn-editorial {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  letter-spacing: var(--tracking-mono);
+  font-weight: var(--font-medium);
+  padding: 8px 16px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all var(--transition-fast);
+  border: 1px solid var(--border);
+  background: var(--surface-interactive);
+  color: var(--text-primary);
+}
+
+.btn-editorial:hover {
+  background: var(--surface-elevated);
+  border-color: var(--border-strong);
+  color: #fff;
+}
+
+.btn-editorial-primary {
+  background: var(--accent);
+  color: #0a0a09;
+  border: 1px solid var(--accent);
+  font-weight: var(--font-semibold);
+}
+
+.btn-editorial-primary:hover {
+  background: var(--accent-hover);
+  border-color: var(--accent-hover);
+  box-shadow: 0 0 16px var(--accent-glow);
+}
+
+/* Architectural Grid Lines Overlay */
+.grid-bg-overlay {
+  position: absolute;
+  inset: 0;
+  background-image: 
+    linear-gradient(to right, rgba(232, 230, 223, 0.02) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(232, 230, 223, 0.02) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+}
+
+/* Sleek Scrollbar */
 ::-webkit-scrollbar {
-  display: none; /* Chrome, Safari */
+  width: 6px;
+  height: 6px;
 }
 
-html {
-  scrollbar-width: none; /* Firefox */
+::-webkit-scrollbar-track {
+  background: var(--background);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--surface-interactive);
+  border-radius: var(--radius-sm);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
 }

@@ -1,31 +1,110 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { FiArrowUpRight, FiBookOpen } from "react-icons/fi";
+import { useNavigate } from "react-router-dom";
+import API_BASE_URL from "../config";
+import { getEditorialCover } from "../utils/coverHelper";
 import "../styles/Banner.css";
 
 const Banner = () => {
+  const navigate = useNavigate();
+  const [featured, setFeatured] = useState(null);
+
+  useEffect(() => {
+    const fetchFeatured = async () => {
+      try {
+        const res = await fetch(`${API_BASE_URL}/featured-book`);
+        if (res.ok) {
+          const data = await res.json();
+          if (data.book) {
+            setFeatured(data.book);
+          }
+        }
+      } catch (e) {
+        console.error("Failed to load featured book", e);
+      }
+    };
+    fetchFeatured();
+  }, []);
+
+  const title = featured?.title || "Brave New World";
+  const author = featured?.authors?.join(", ") || "Aldous Huxley";
+  const category = featured?.categories?.join(" / ") || "Fiction / Dystopian";
+  const rating = featured?.averageRating ? `★ ${featured.averageRating}` : "★ 4.5";
+  const summary = featured?.description || "A masterwork of speculative fiction exploring social conditioning, technological dominance, and human identity in a structured society.";
+  const coverUrl = featured?.thumbnail || getEditorialCover(title, author);
+
   return (
-    <div className="banner">
-      <div className="banner__content">
-        <h1 className="banner__title">KIMETSU NO YAIBA</h1>
-        <p className="banner__description">
-          Tanjiro Kamado's peaceful life is shattered when his family is slaughtered by demons. 
-          Now he must become a demon slayer to avenge them and save his sister Nezuko.
-        </p>
-        <div className="banner__buttons">
-          <button className="banner__button banner__button--primary">
-            <svg viewBox="0 0 24 24">
-              <path d="M8 5v14l11-7z"/>
-            </svg>
-            Read Now
-          </button>
-          <button className="banner__button banner__button--secondary">
-            <svg viewBox="0 0 24 24">
-              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
-            </svg>
-            More Info
-          </button>
+    <section className="pm-hero-section">
+      <div className="grid-bg-overlay"></div>
+
+      <div className="pm-hero-inner">
+        {/* Left Column: Title, Metadata, Telemetry */}
+        <div className="pm-hero-content">
+          <div className="pm-hero-eyebrow">
+            <span className="pm-hero-tag">MODEL FEATURED</span>
+            <span className="pm-hero-index">// CS22/BOOK-ENGINE</span>
+          </div>
+
+          <h1 className="pm-hero-title">{title}</h1>
+
+          <p className="pm-hero-summary">{summary}</p>
+
+          {/* Technical Specs Grid */}
+          <div className="pm-hero-specs">
+            <div className="pm-spec-item">
+              <span className="pm-spec-label">AUTHOR / CREATOR</span>
+              <span className="pm-spec-val">{author}</span>
+            </div>
+            <div className="pm-spec-item">
+              <span className="pm-spec-label">MODEL ARCHITECTURE</span>
+              <span className="pm-spec-val">TF-IDF + Cosine Similarity</span>
+            </div>
+            <div className="pm-spec-item">
+              <span className="pm-spec-label">GENRE CLASSIFICATION</span>
+              <span className="pm-spec-val">{category}</span>
+            </div>
+            <div className="pm-spec-item">
+              <span className="pm-spec-label">RATING RECEPTIVITY</span>
+              <span className="pm-spec-val">{rating} / 5.0</span>
+            </div>
+          </div>
+
+          <div className="pm-hero-actions">
+            <button
+              className="btn-editorial btn-editorial-primary"
+              onClick={() => navigate(`/search?q=${encodeURIComponent(title)}`)}
+            >
+              <span>EXPLORE THIS BOOK</span>
+              <FiArrowUpRight />
+            </button>
+            <button
+              className="btn-editorial"
+              onClick={() => navigate('/books')}
+            >
+              <FiBookOpen />
+              <span>EXPLORE BOOKS CATALOG</span>
+            </button>
+          </div>
+        </div>
+
+        {/* Right Column: Architectural Framed Cover */}
+        <div className="pm-hero-visual">
+          <div className="pm-hero-cover-frame">
+            <img
+              src={coverUrl}
+              alt={title}
+              onError={(e) => {
+                e.target.src = getEditorialCover(title, author);
+              }}
+            />
+            <div className="pm-cover-caption">
+              <span className="pm-caption-meta">[ENGINE MATCH]</span>
+              <span className="mono-tag">{rating}</span>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 

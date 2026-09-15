@@ -1,7 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { FiSettings, FiLock, FiMonitor, FiArrowLeft } from 'react-icons/fi';
+import { FiSliders, FiShield, FiCpu, FiArrowLeft, FiCheck, FiMonitor, FiUploadCloud, FiImage } from 'react-icons/fi';
+import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
+import { processUserAvatar } from '../utils/imageHelper';
 import '../styles/Settings.css';
+import '../styles/ProfileSelection.css';
 
 const Settings = () => {
   const location = useLocation();
@@ -19,15 +23,49 @@ const Settings = () => {
   const [formData, setFormData] = useState({
     displayName: profileData?.name || '',
     language: 'English',
-    maturityRating: 'PG-13',
-    autoplay: true
+    maturityRating: 'All Ages',
+    dynamicDiscovery: true,
+    recommendationMode: 'hybrid',
+    explorationWeight: '70'
   });
 
-  const [devices, setDevices] = useState([
-    { id: 1, type: '📱', name: 'iPhone 13', lastActive: 'Today, 10:30 AM' },
-    { id: 2, type: '💻', name: 'MacBook Pro', lastActive: 'Yesterday, 8:15 PM' },
-    { id: 3, type: '📺', name: 'Samsung Smart TV', lastActive: 'June 25, 2023' }
-  ]);
+  const fileInputRef = useRef(null);
+  const [avatar, setAvatar] = useState(profileData?.avatar || null);
+  const [avatarTab, setAvatarTab] = useState('preset');
+  const [uploadError, setUploadError] = useState(null);
+
+  const makeAvatar = (tag, color) => `data:image/svg+xml;utf8,${encodeURIComponent(`
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" width="160" height="160">
+    <rect width="160" height="160" fill="#141413" />
+    <rect x="8" y="8" width="144" height="144" fill="none" stroke="#232320" stroke-width="2" />
+    <circle cx="80" cy="68" r="30" fill="none" stroke="${color}" stroke-width="3" />
+    <path d="M 38 132 Q 80 100 122 132" fill="none" stroke="${color}" stroke-width="3" />
+    <text x="80" y="150" fill="#888882" font-family="monospace" font-size="10" text-anchor="middle" letter-spacing="1.5">// ${tag}</text>
+  </svg>
+  `)}`;
+
+  const profilePics = [
+    makeAvatar('ARCH', '#9be28b'),
+    makeAvatar('SYS', '#60a5fa'),
+    makeAvatar('CORE', '#f43f5e'),
+    makeAvatar('DATA', '#eab308'),
+    makeAvatar('ALGO', '#a855f7'),
+    makeAvatar('NEURAL', '#06b6d4'),
+    makeAvatar('LEAD', '#f97316'),
+    makeAvatar('ROOT', '#10b981')
+  ];
+
+  const handleFileChange = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploadError(null);
+    try {
+      const dataUrl = await processUserAvatar(file);
+      setAvatar(dataUrl);
+    } catch (err) {
+      setUploadError(err.message || 'Failed to process image');
+    }
+  };
 
   useEffect(() => {
     if (!profileId || !profileData) {
@@ -49,194 +87,353 @@ const Settings = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    alert('Settings saved successfully!');
+    // Update local profile name and avatar
+    try {
+      const profiles = JSON.parse(localStorage.getItem("profiles")) || [];
+      const updated = profiles.map(p => p.id === profileId ? { ...p, name: formData.displayName, avatar: avatar || p.avatar } : p);
+      localStorage.setItem("profiles", JSON.stringify(updated));
+      if (localStorage.getItem('selectedProfile') === profileId) {
+        localStorage.setItem("selectedProfileName", formData.displayName);
+      }
+    } catch {
+      // ignore
+    }
+    alert('Parameters saved successfully.');
     navigate('/profile');
   };
 
   return (
-    <div className="settings-page">
-      <div className="settings-header">
-        <button className="back-button" onClick={() => navigate('/profile')}>
-          <FiArrowLeft /> Back to Profiles
-        </button>
-        <h1>
-          Settings {profileData?.name ? `for ${profileData.name}` : ''}
-        </h1>
-      </div>
+    <div className="pm-settings-wrapper">
+      <Navbar />
 
-      <div className="settings-tabs">
-        <button
-          className={`settings-tab ${activeTab === 'profile' ? 'active' : ''}`}
-          onClick={() => setActiveTab('profile')}
-        >
-          <FiSettings /> Profile
-        </button>
-        <button
-          className={`settings-tab ${activeTab === 'privacy' ? 'active' : ''}`}
-          onClick={() => setActiveTab('privacy')}
-        >
-          <FiLock /> Privacy
-        </button>
-        <button
-          className={`settings-tab ${activeTab === 'devices' ? 'active' : ''}`}
-          onClick={() => setActiveTab('devices')}
-        >
-          <FiMonitor /> Devices
-        </button>
-      </div>
+      <main className="settings-container">
+        {/* Navigation & Header */}
+        <div className="settings-header">
+          <button className="back-button font-mono" onClick={() => navigate('/profile')}>
+            <FiArrowLeft />
+            <span>[ RETURN TO PROFILES ]</span>
+          </button>
+          
+          <div className="settings-title-group">
+            <span className="mono-tag font-mono">// PARAMETER SPECIFICATIONS</span>
+            <h1 className="settings-title">
+              Operator Settings: <span className="settings-title-highlight">{profileData?.name || 'Reader'}</span>
+            </h1>
+            <p className="settings-subtitle">
+              Tune recommendation hyperparameters, reading taxonomy filters, and connected session nodes.
+            </p>
+          </div>
+        </div>
 
-      {activeTab === 'profile' && (
-        <div className="settings-content">
-          <form onSubmit={handleSubmit}>
+        {/* Tab Selector */}
+        <div className="settings-tabs font-mono">
+          <button
+            className={`settings-tab ${activeTab === 'profile' ? 'active' : ''}`}
+            onClick={() => setActiveTab('profile')}
+          >
+            <FiSliders size={13} />
+            <span>01 // PROFILE</span>
+          </button>
+          <button
+            className={`settings-tab ${activeTab === 'engine' ? 'active' : ''}`}
+            onClick={() => setActiveTab('engine')}
+          >
+            <FiCpu size={13} />
+            <span>02 // ALGORITHM</span>
+          </button>
+          <button
+            className={`settings-tab ${activeTab === 'devices' ? 'active' : ''}`}
+            onClick={() => setActiveTab('devices')}
+          >
+            <FiMonitor size={13} />
+            <span>03 // SESSIONS</span>
+          </button>
+        </div>
+
+        {/* Tab 1: Profile Parameters */}
+        {activeTab === 'profile' && (
+          <form onSubmit={handleSubmit} className="settings-form">
             <div className="settings-card">
-              <h2>Profile Information</h2>
+              <div className="settings-card-header">
+                <span className="mono-tag font-mono">CORE IDENTITY</span>
+                <h2>Identity & Taxonomy Preferences</h2>
+              </div>
+
               <div className="form-group">
-                <label>Display Name</label>
+                <label className="font-mono field-label">OPERATOR DISPLAY IDENTIFIER</label>
                 <input
                   type="text"
                   name="displayName"
                   value={formData.displayName}
                   onChange={handleInputChange}
-                  className="form-control"
+                  className="form-control font-mono"
                   maxLength="20"
+                  required
                 />
               </div>
-              <div className="form-group">
-                <label>Language</label>
-                <select
-                  name="language"
-                  value={formData.language}
-                  onChange={handleInputChange}
-                  className="form-control"
-                >
-                  <option value="English">English</option>
-                  <option value="Spanish">Spanish</option>
-                  <option value="French">French</option>
-                  <option value="German">German</option>
-                </select>
-              </div>
-              <div className="form-group">
-                <label>Profile Picture</label>
-                <div className="avatar-options">
-                  <img src={profileData?.avatar} alt="Current" className="current-avatar" />
-                  <button type="button" className="change-avatar-btn" disabled>
-                    Change Picture
+
+              {/* Avatar Configuration */}
+              <div className="form-group" style={{ marginTop: '1.5rem', marginBottom: '1.5rem' }}>
+                <label className="font-mono field-label">OPERATOR AVATAR SELECTION</label>
+                
+                {avatar && (
+                  <div className="avatar-live-preview">
+                    <div className="avatar-preview-img-wrap">
+                      <img src={avatar} alt="Current Avatar" />
+                    </div>
+                    <div className="avatar-preview-info">
+                      <span className="avatar-preview-title font-mono">ACTIVE PROFILE AVATAR</span>
+                      <span className="avatar-preview-sub font-mono">
+                        {profilePics.includes(avatar) ? '● PRESET SYSTEM AVATAR' : '● CUSTOM UPLOADED PHOTO'}
+                      </span>
+                    </div>
+                  </div>
+                )}
+
+                <div className="avatar-source-tabs">
+                  <button
+                    type="button"
+                    className={`avatar-tab-btn ${avatarTab === 'preset' ? 'active' : ''}`}
+                    onClick={() => setAvatarTab('preset')}
+                  >
+                    <FiImage />
+                    <span>PRESET AVATARS</span>
                   </button>
+                  <button
+                    type="button"
+                    className={`avatar-tab-btn ${avatarTab === 'upload' ? 'active' : ''}`}
+                    onClick={() => setAvatarTab('upload')}
+                  >
+                    <FiUploadCloud />
+                    <span>UPLOAD PHOTO</span>
+                  </button>
+                </div>
+
+                {avatarTab === 'preset' ? (
+                  <div className="avatar-grid" style={{ marginTop: '0.75rem' }}>
+                    {profilePics.map((pic, index) => (
+                      <div
+                        key={index}
+                        className={`avatar-option-wrap ${avatar === pic ? 'selected' : ''}`}
+                        onClick={() => setAvatar(pic)}
+                      >
+                        <img src={pic} alt={`Preset ${index + 1}`} />
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="avatar-upload-section" style={{ marginTop: '0.75rem' }}>
+                    <input
+                      type="file"
+                      ref={fileInputRef}
+                      accept="image/png, image/jpeg, image/webp, image/svg+xml"
+                      style={{ display: 'none' }}
+                      onChange={handleFileChange}
+                    />
+                    <div
+                      className="avatar-dropzone"
+                      onClick={() => fileInputRef.current?.click()}
+                    >
+                      <div className="avatar-dropzone-icon">
+                        <FiUploadCloud />
+                      </div>
+                      <div className="avatar-dropzone-text font-mono">
+                        CLICK TO BROWSE IMAGE
+                      </div>
+                      <div className="avatar-dropzone-sub font-mono">
+                        PNG, JPG, WEBP, SVG · AUTOMATICALLY SCALED
+                      </div>
+                    </div>
+                    {uploadError && (
+                      <div className="username-error font-mono">{uploadError}</div>
+                    )}
+                  </div>
+                )}
+              </div>
+
+              <div className="form-grid-2">
+                <div className="form-group">
+                  <label className="font-mono field-label">CATALOG LANGUAGE</label>
+                  <select
+                    name="language"
+                    value={formData.language}
+                    onChange={handleInputChange}
+                    className="form-control font-mono"
+                  >
+                    <option value="English">English (Default)</option>
+                    <option value="Japanese">Japanese (Original Manga)</option>
+                    <option value="German">German</option>
+                    <option value="French">French</option>
+                  </select>
+                </div>
+
+                <div className="form-group">
+                  <label className="font-mono field-label">CONTENT CLASSIFICATION</label>
+                  <select
+                    name="maturityRating"
+                    value={formData.maturityRating}
+                    onChange={handleInputChange}
+                    className="form-control font-mono"
+                  >
+                    <option value="All Ages">All Ages (General Audience)</option>
+                    <option value="Teen 13+">Teen 13+ (Shonen / YA)</option>
+                    <option value="Mature 17+">Mature 17+ (Seinen / Unrestricted)</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="form-group checkbox-group">
+                <label className="checkbox-label">
+                  <input
+                    type="checkbox"
+                    name="dynamicDiscovery"
+                    checked={formData.dynamicDiscovery}
+                    onChange={handleInputChange}
+                  />
+                  <span>Enable dynamic carousel updates based on live reading interaction</span>
+                </label>
+              </div>
+
+              <div className="avatar-preview-section">
+                <label className="font-mono field-label">CURRENT AVATAR</label>
+                <div className="avatar-preview-wrap">
+                  <img src={profileData?.avatar} alt="Current" className="current-avatar" />
+                  <div className="avatar-info font-mono">
+                    <span className="avatar-spec">STATUS: VERIFIED AVATAR</span>
+                    <span className="avatar-note">To update avatar, use the Manage Operator menu.</span>
+                  </div>
                 </div>
               </div>
             </div>
-            <div className="settings-card">
-              <h2>Playback Settings</h2>
-              <div className="form-group checkbox-group">
-                <input
-                  type="checkbox"
-                  id="autoplay"
-                  name="autoplay"
-                  checked={formData.autoplay}
-                  onChange={handleInputChange}
-                />
-                <label htmlFor="autoplay">Autoplay next episode</label>
-              </div>
-              <div className="form-group">
-                <label>Maturity Rating</label>
-                <select
-                  name="maturityRating"
-                  value={formData.maturityRating}
-                  onChange={handleInputChange}
-                  className="form-control"
-                >
-                  <option value="G">G - All Ages</option>
-                  <option value="PG">PG - Parental Guidance</option>
-                  <option value="PG-13">PG-13 - Teens 13+</option>
-                  <option value="R">R - Mature 17+</option>
-                </select>
-              </div>
-            </div>
-            <div className="form-actions">
+
+            <div className="form-actions font-mono">
               <button
                 type="button"
-                className="btn btn-secondary"
+                className="btn-editorial"
                 onClick={() => navigate('/profile')}
               >
-                Cancel
+                [ CANCEL ]
               </button>
-              <button type="submit" className="btn btn-primary">
-                Save Changes
+              <button type="submit" className="btn-editorial btn-editorial-primary">
+                <span>[ COMMIT CHANGES ]</span>
+                <FiCheck size={12} />
               </button>
             </div>
           </form>
-        </div>
-      )}
+        )}
 
-      {activeTab === 'privacy' && (
-        <div className="settings-content">
+        {/* Tab 2: Algorithm Parameters */}
+        {activeTab === 'engine' && (
           <div className="settings-card">
-            <h2>Privacy Settings</h2>
-            <div className="form-group">
-              <label>Viewing Activity</label>
-              <p>Manage the titles you've watched on Page Match NEW</p>
-              <button className="btn btn-secondary">View Activity</button>
+            <div className="settings-card-header">
+              <span className="mono-tag font-mono">HYBRID HYPERPARAMETERS</span>
+              <h2>Recommendation Model Calibration</h2>
             </div>
+
             <div className="form-group">
-              <label>Download History</label>
-              <p>Manage your download history and preferences</p>
-              <button className="btn btn-secondary">Download History</button>
+              <label className="font-mono field-label">SCORING ARCHITECTURE</label>
+              <div className="radio-group font-mono">
+                <label className="radio-option">
+                  <input
+                    type="radio"
+                    name="recommendationMode"
+                    value="hybrid"
+                    checked={formData.recommendationMode === 'hybrid'}
+                    onChange={handleInputChange}
+                  />
+                  <span>HYBRID (TF-IDF + LightFM WARP Loss) — Recommended</span>
+                </label>
+                <label className="radio-option">
+                  <input
+                    type="radio"
+                    name="recommendationMode"
+                    value="content"
+                    checked={formData.recommendationMode === 'content'}
+                    onChange={handleInputChange}
+                  />
+                  <span>PURE SEMANTIC (TF-IDF Cosine Similarity)</span>
+                </label>
+                <label className="radio-option">
+                  <input
+                    type="radio"
+                    name="recommendationMode"
+                    value="collaborative"
+                    checked={formData.recommendationMode === 'collaborative'}
+                    onChange={handleInputChange}
+                  />
+                  <span>COLLABORATIVE MATRIX (Latent Factorization)</span>
+                </label>
+              </div>
             </div>
+
             <div className="form-group">
-              <label>Parental Controls</label>
-              <p>Restrict content by maturity rating</p>
-              <div className="parental-controls">
-                <select
-                  className="form-control"
-                  value={formData.maturityRating}
-                  onChange={handleInputChange}
-                >
-                  <option value="G">G - All Ages</option>
-                  <option value="PG">PG - Parental Guidance</option>
-                  <option value="PG-13">PG-13 - Teens 13+</option>
-                  <option value="R">R - Mature 17+</option>
-                </select>
-                <button className="btn btn-secondary">Set PIN</button>
+              <div className="slider-label-row font-mono">
+                <label className="field-label">EXPLORATION VS EXPLOITATION RATIO</label>
+                <span className="slider-val">{formData.explorationWeight}% EXPLOITATION</span>
+              </div>
+              <input
+                type="range"
+                min="10"
+                max="90"
+                name="explorationWeight"
+                value={formData.explorationWeight}
+                onChange={handleInputChange}
+                className="form-range"
+              />
+              <p className="field-hint">
+                Controls the balance between known preferences (high exploitation) and serendipitous genre discovery (high exploration).
+              </p>
+            </div>
+
+            <div className="telemetry-box font-mono">
+              <div className="telemetry-box-title">// ACTIVE EVALUATION TELEMETRY</div>
+              <div className="telemetry-grid">
+                <div><span>MODEL ID:</span> <strong>cs22/book-engine</strong></div>
+                <div><span>WARP PRECISION@5:</span> <strong>0.1688</strong></div>
+                <div><span>DATASET:</span> <strong>Amazon Books 3M+</strong></div>
+                <div><span>EMBEDDING DIM:</span> <strong>64 Latent</strong></div>
               </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
 
-      {activeTab === 'devices' && (
-        <div className="settings-content">
+        {/* Tab 3: Connected Sessions */}
+        {activeTab === 'devices' && (
           <div className="settings-card">
-            <h2>Device Management</h2>
-            <p>These are the devices currently signed in to your Page Match NEW account.</p>
+            <div className="settings-card-header">
+              <span className="mono-tag font-mono">ACTIVE TELEMETRY</span>
+              <h2>Connected Operator Workstations</h2>
+            </div>
+            <p className="field-hint" style={{ marginBottom: '1.5rem' }}>
+              These workstations hold active access tokens and reading pipeline state for this operator.
+            </p>
+
             <div className="devices-list">
               {devices.map((device) => (
                 <div key={device.id} className="device-item">
                   <div className="device-info">
                     <div className="device-icon">{device.type}</div>
                     <div>
-                      <h3>{device.name}</h3>
-                      <p>Last active: {device.lastActive}</p>
+                      <h3 className="device-name font-mono">{device.name}</h3>
+                      <p className="device-meta font-mono">
+                        <span>{device.location}</span> &bull; <span>{device.lastActive}</span>
+                      </p>
                     </div>
                   </div>
-                  <div className="device-actions">
-                    <button
-                      onClick={() => handleSignOutDevice(device.id)}
-                      className="btn btn-text"
-                    >
-                      Sign Out
-                    </button>
-                  </div>
+                  <button
+                    onClick={() => handleSignOutDevice(device.id)}
+                    className="btn-editorial btn-editorial-sm font-mono"
+                  >
+                    [ TERMINATE ]
+                  </button>
                 </div>
               ))}
             </div>
           </div>
-          <div className="settings-card">
-            <h2>Download Devices</h2>
-            <p>Manage devices authorized for downloads</p>
-            <button className="btn btn-secondary">Manage Download Devices</button>
-          </div>
-        </div>
-      )}
+        )}
+      </main>
+
+      <Footer />
     </div>
   );
 };

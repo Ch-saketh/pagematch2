@@ -7,7 +7,6 @@ import Search from "./pages/Search";
 import Books from "./pages/Books";
 import Manga from "./pages/Manga";
 import Settings from "./pages/Settings";
-import BookAssistant from "./pages/BookAssistant";
 
 const AppRouter = () => {
   return (
@@ -26,7 +25,6 @@ const AppRouter = () => {
         <Route path="/books" element={<Books />} />
         <Route path="/manga" element={<Manga />} />
         <Route path="/settings" element={<Settings />} />
-        <Route path="/book-assistant" element={<BookAssistant />} />
         
         {/* Catch-all */}
         <Route path="*" element={<Navigate to="/login" />} />

@@ -1,107 +1,143 @@
-import React from 'react';
-import '../styles/Books.css';
+import React, { useEffect, useState, useRef } from 'react';
 import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
+import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
+import { useNavigate } from 'react-router-dom';
+import API_BASE_URL from '../config';
+import { getEditorialCover } from '../utils/coverHelper';
+import '../styles/Books.css';
+import '../styles/HomepageRecommendations.css';
 
-const Books = () => {
+const BooksRow = ({ collection, onSelect }) => {
+  const scrollRef = useRef(null);
+
+  const handleScroll = (dir) => {
+    if (scrollRef.current) {
+      const amount = scrollRef.current.clientWidth * 0.75;
+      scrollRef.current.scrollTo({
+        left: dir === 'left' ? scrollRef.current.scrollLeft - amount : scrollRef.current.scrollLeft + amount,
+        behavior: 'smooth'
+      });
+    }
+  };
+
   return (
-    <>
-      <Navbar />
-      <div className="books-page">
-        {/* Featured Book Banner */}
-        <div 
-          className="featured-banner"
-          style={{ backgroundImage: "linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1544947950-fa07a98d237f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80')" }}
-        >
-          <div className="featured-content">
-            <h1 className="featured-title">The Midnight Library</h1>
-            <p className="featured-description">
-              Between life and death there is a library, and within that library, the shelves go on forever. 
-              Every book provides a chance to try another life you could have lived.
-            </p>
-            <div className="featured-meta">
-              <span>4.8 ★</span>
-              <span>2020</span>
-              <span>Fiction</span>
-            </div>
-            <div className="featured-buttons">
-              <button className="btn btn-primary">
-                <i className="fas fa-book-open"></i> Read Now
-              </button>
-              <button className="btn btn-secondary">
-                <i className="fas fa-info-circle"></i> More Info
-              </button>
-            </div>
-          </div>
+    <div className="pm-row-wrapper">
+      <div className="pm-row-header">
+        <div className="pm-row-title-group">
+          <span className="pm-row-meta-eyebrow">{collection.indexStr} // CATEGORY INDEX</span>
+          <h2 className="pm-row-title">{collection.title}</h2>
         </div>
-
-        {/* Books Sections */}
-        <div className="books-sections">
-          {/* Trending Now Section */}
-          <div className="section">
-            <h2 className="section-title">Trending Now</h2>
-            <div className="books-row">
-              {[1, 2, 3, 4, 5, 6].map((item) => (
-                <div className="book-card" key={item}>
-                  <div 
-                    className="book-cover"
-                    style={{ backgroundImage: "url('https://images.unsplash.com/photo-1544947950-fa07a98d237f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80')" }}
-                  >
-                    <div className="book-hover-info">
-                      <h3>Book Title {item}</h3>
-                      <p>Author Name</p>
-                      <div className="hover-buttons">
-                        <button>
-                          <i className="fas fa-book-open"></i> Read
-                        </button>
-                        <button>
-                          <i className="fas fa-plus"></i> List
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="book-info">
-                    <h3>Book Title {item}</h3>
-                    <p>4.{(item + 3)} ★</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Popular Fiction Section */}
-          <div className="section">
-            <h2 className="section-title">Popular Fiction</h2>
-            <div className="books-row">
-              {[1, 2, 3, 4, 5, 6].map((item) => (
-                <div className="book-card" key={item}>
-                  <div 
-                    className="book-cover"
-                    style={{ backgroundImage: "url('https://images.unsplash.com/photo-1544947950-fa07a98d237f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80')" }}
-                  >
-                    <div className="book-hover-info">
-                      <h3>Fiction Book {item}</h3>
-                      <p>Author Name</p>
-                      <div className="hover-buttons">
-                        <button>
-                          <i className="fas fa-book-open"></i> Read
-                        </button>
-                        <button>
-                          <i className="fas fa-plus"></i> List
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="book-info">
-                    <h3>Fiction Book {item}</h3>
-                    <p>4.{(item + 2)} ★</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
+        <div className="pm-row-controls">
+          <button className="pm-scroll-btn" onClick={() => handleScroll('left')} aria-label="Scroll left">
+            <FiChevronLeft />
+          </button>
+          <button className="pm-scroll-btn" onClick={() => handleScroll('right')} aria-label="Scroll right">
+            <FiChevronRight />
+          </button>
         </div>
       </div>
-    </>
+
+      <div className="pm-carousel-track" ref={scrollRef}>
+        {collection.books.map((book) => {
+          const author = book.authors?.[0] || 'Unknown Author';
+          const coverUrl = book.thumbnail || getEditorialCover(book.title, author);
+
+          return (
+            <article
+              key={book.id}
+              className="pm-book-card"
+              onClick={() => onSelect(book)}
+            >
+              <div className="pm-card-cover-wrap">
+                <img
+                  src={coverUrl}
+                  alt={book.title}
+                  className="pm-card-cover"
+                  loading="lazy"
+                  onError={(e) => {
+                    e.target.src = getEditorialCover(book.title, author);
+                  }}
+                />
+                <span className="pm-card-badge">{book.categories?.[0] || 'BOOK'}</span>
+              </div>
+
+              <div className="pm-card-body">
+                <h3 className="pm-card-title">{book.title}</h3>
+                <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', marginBottom: '0.5rem' }}>
+                  {author}
+                </p>
+                <div className="pm-card-meta-row">
+                  <span className="pm-card-rating">★ {book.averageRating || '4.5'}</span>
+                  <span>[RECORD →]</span>
+                </div>
+              </div>
+            </article>
+          );
+        })}
+      </div>
+    </div>
+  );
+};
+
+const Books = () => {
+  const navigate = useNavigate();
+  const [collections, setCollections] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchBooks = async () => {
+      try {
+        const res = await fetch(`${API_BASE_URL}/catalog/books`);
+        if (res.ok) {
+          const data = await res.json();
+          if (data.collections && data.collections.length > 0) {
+            setCollections(data.collections);
+          }
+        }
+      } catch (err) {
+        console.error("Failed to load books catalog", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchBooks();
+  }, []);
+
+  const handleBookSelect = (book) => {
+    navigate(`/search?q=${encodeURIComponent(book.title)}`);
+  };
+
+  return (
+    <div className="pm-books-page">
+      <Navbar />
+
+      <section className="pm-books-hero">
+        <div className="pm-books-hero-content">
+          <span className="mono-tag font-mono" style={{ marginBottom: '1rem' }}>
+            // 01 · CURATED SELECTION
+          </span>
+          <h1 className="pm-hero-title">Literature & Analytical Works</h1>
+          <p className="pm-hero-summary">
+            Explorations across speculative fiction, systems thinking, and human psychology. Indexed directly from the cs22/book-engine ML model repository.
+          </p>
+        </div>
+      </section>
+
+      <section className="pm-books-sections">
+        {loading && collections.length === 0 ? (
+          <div style={{ padding: '3rem var(--container-pad)', fontFamily: 'var(--font-mono)', color: 'var(--text-muted)' }}>
+            // QUERYING CS22/BOOK-ENGINE CATALOG...
+          </div>
+        ) : (
+          collections.map((col, idx) => (
+            <BooksRow key={idx} collection={col} onSelect={handleBookSelect} />
+          ))
+        )}
+      </section>
+
+      <Footer />
+    </div>
   );
 };
 

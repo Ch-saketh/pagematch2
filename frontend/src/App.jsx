@@ -6,7 +6,6 @@ import Settings from './pages/Settings';
 import Manga from './pages/Manga';
 import Books from './pages/Books';
 import Search from './pages/Search';
-import BookAssistant from './pages/BookAssistant';
 function AppRouter() {
   return (
     <Router>
@@ -19,7 +18,6 @@ function AppRouter() {
         <Route path="/manga" element={<Manga />} />
         <Route path="/books" element={<Books />} />
         <Route path="/search" element={<Search />} />
-        <Route path="/assistant" element={<BookAssistant />} />
       </Routes>
     </Router>
   );

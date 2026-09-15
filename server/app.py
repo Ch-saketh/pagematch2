@@ -38,5 +38,7 @@ app.register_blueprint(gemini_bp)
 
 # Run server
 if __name__ == "__main__":
-    print("✅ Flask server running on http://0.0.0.0:5000")
-    app.run(debug=True, host="0.0.0.0", port=5000)
+    import os
+    port = int(os.getenv("PORT", "5001"))
+    print(f"✅ Flask server running on http://0.0.0.0:{port}")
+    app.run(debug=True, host="0.0.0.0", port=port)

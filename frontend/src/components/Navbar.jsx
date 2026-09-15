@@ -1,115 +1,194 @@
-import React, { useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { NavLink, useNavigate, useLocation } from "react-router-dom";
+import { FiSearch, FiX, FiMenu, FiUser, FiTerminal } from "react-icons/fi";
 import "../styles/Navbar.css";
 
 const Navbar = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [searchQuery, setSearchQuery] = useState("");
   const [showSearch, setShowSearch] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [profileName, setProfileName] = useState("Reader");
+  const [profileAvatar, setProfileAvatar] = useState(null);
 
-  const handleSearchSubmit = async (e) => {
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 15);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  useEffect(() => {
+    setMobileMenuOpen(false);
+    try {
+      const storedProfiles = JSON.parse(localStorage.getItem("profiles")) || [];
+      const selectedId = localStorage.getItem("selectedProfile");
+      const active = storedProfiles.find((p) => p.id === selectedId);
+      if (active) {
+        setProfileName(active.name || "Reader");
+        if (active.avatar && active.avatar.includes("unsplash.com")) {
+          const cleanAvatar = `data:image/svg+xml;utf8,${encodeURIComponent(`
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" width="160" height="160">
+            <rect width="160" height="160" fill="#141413" />
+            <rect x="8" y="8" width="144" height="144" fill="none" stroke="#232320" stroke-width="2" />
+            <circle cx="80" cy="68" r="30" fill="none" stroke="#9be28b" stroke-width="3" />
+            <path d="M 38 132 Q 80 100 122 132" fill="none" stroke="#9be28b" stroke-width="3" />
+            <text x="80" y="150" fill="#888882" font-family="monospace" font-size="10" text-anchor="middle" letter-spacing="1.5">// ARCH</text>
+          </svg>
+          `)}`;
+          active.avatar = cleanAvatar;
+          localStorage.setItem("profiles", JSON.stringify(storedProfiles));
+          setProfileAvatar(cleanAvatar);
+        } else {
+          setProfileAvatar(active.avatar);
+        }
+      } else {
+        setProfileName(localStorage.getItem("selectedProfileName") || "Reader");
+      }
+    } catch {
+      // ignore
+    }
+  }, [location.pathname]);
+
+  const handleSearchSubmit = (e) => {
     e.preventDefault();
     if (searchQuery.trim()) {
-      navigate(`/search?q=${searchQuery.trim()}`); // ✅ Trimmed
-      setSearchQuery("");
-    }
-  };
-
-  const handleSearchButtonClick = async () => {
-    setShowSearch(!showSearch);
-    if (!showSearch && searchQuery.trim()) {
-      navigate(`/search?q=${searchQuery.trim()}`); // ✅ Trimmed
-      setSearchQuery("");
+      navigate(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
+      setShowSearch(false);
     }
   };
 
   return (
-    <nav className="navbar">
-      <div className="navbar__container">
-        {/* Logo */}
-        <div className="navbar__logo">
-          <span className="logo-page">Page</span>
-          <span className="logo-match">Match</span>
-          <span className="navbar__badge">NEW</span>
+    <header className={`pm-navbar ${scrolled ? "pm-navbar--scrolled" : ""}`}>
+      <div className="pm-navbar__inner">
+        {/* Left: Brand & Telemetry */}
+        <div className="pm-navbar__left" onClick={() => navigate("/home")}>
+          <div className="pm-navbar__brand">
+            <span className="pm-brand-title">PAGEMATCH</span>
+            <span className="pm-brand-dot"></span>
+          </div>
+          <div className="pm-brand-telemetry font-mono">
+            <span>ENGINE: HYBRID</span>
+            <span className="telemetry-separator">/</span>
+            <span className="telemetry-highlight">WARP P@5: 0.1688</span>
+          </div>
         </div>
 
-        {/* Navigation Links */}
-        <div className="navbar__links">
+        {/* Center: Monospace Navigation Links */}
+        <nav className="pm-navbar__nav font-mono">
           <NavLink
-            to="/"
+            to="/home"
             className={({ isActive }) =>
-              `navbar__link ${isActive ? "navbar__link--active" : ""}`
+              `pm-nav-link ${isActive ? "pm-nav-link--active" : ""}`
             }
           >
-            Home
+            <span className="nav-index">01</span>
+            <span>FEED</span>
           </NavLink>
-          <NavLink to="/manga" className="navbar__link">
-            Manga
-          </NavLink>
-          <NavLink to="/books" className="navbar__link">
-            Books
-          </NavLink>
-          <NavLink to="/assistant" className="navbar__link">
-           🤖 Book Assistant
-            </NavLink>
-
-        </div>
-
-        {/* Right Section: Search + Profile */}
-        <div className="navbar__right">
-          {/* Search Input */}
-          <div
-            className={`navbar__search ${
-              showSearch ? "navbar__search--active" : ""
-            }`}
+          <NavLink
+            to="/books"
+            className={({ isActive }) =>
+              `pm-nav-link ${isActive ? "pm-nav-link--active" : ""}`
+            }
           >
-            <form onSubmit={handleSearchSubmit}>
+            <span className="nav-index">02</span>
+            <span>BOOKS</span>
+          </NavLink>
+          <NavLink
+            to="/manga"
+            className={({ isActive }) =>
+              `pm-nav-link ${isActive ? "pm-nav-link--active" : ""}`
+            }
+          >
+            <span className="nav-index">03</span>
+            <span>MANGA</span>
+          </NavLink>
+        </nav>
+
+        {/* Right Actions: Search + Profile Monospace Tag */}
+        <div className="pm-navbar__actions">
+          {/* Architectural Search Bar */}
+          <div className={`pm-search-wrap ${showSearch ? "pm-search-wrap--open" : ""}`}>
+            <form onSubmit={handleSearchSubmit} className="pm-search-form">
+              <FiSearch className="pm-search-icon" />
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search anime, manga or books"
-                className="navbar__search-input"
+                placeholder="Search catalog or author..."
+                className="pm-search-input font-mono"
+                autoFocus={showSearch}
               />
+              <span className="pm-search-hint font-mono">[↵]</span>
+              {searchQuery && (
+                <button
+                  type="button"
+                  className="pm-search-clear"
+                  onClick={() => setSearchQuery("")}
+                >
+                  <FiX />
+                </button>
+              )}
             </form>
             <button
-              className="navbar__search-button"
-              aria-label="Search"
-              onClick={handleSearchButtonClick}
+              type="button"
+              className="pm-search-trigger font-mono"
+              onClick={() => setShowSearch(!showSearch)}
+              aria-label="Toggle Search"
             >
-              <svg width="20" height="20" viewBox="0 0 24 24">
-                <path
-                  d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 
-                    0 0 1.48-5.34c-.47-2.78-2.79-5-5.59-5.34a6.505 
-                    6.505 0 0 0-7.27 7.27c.34 2.8 2.56 5.12 
-                    5.34 5.59a6.5 6.5 0 0 0 5.34-1.48l.27.28v.79l4.25 
-                    4.25c.41.41 1.08.41 1.49 0 
-                    .41-.41.41-1.08 0-1.49L15.5 14zm-6 
-                    0C7.01 14 5 11.99 5 9.5S7.01 5 
-                    9.5 5 14 7.01 14 9.5 11.99 
-                    14 9.5 14z"
-                  fill="currentColor"
-                />
-              </svg>
+              <FiSearch />
+              <span className="pm-key-shortcut">/</span>
             </button>
           </div>
 
-          {/* Profile */}
-          <div className="profile-container">
-            <button
-              className="profile-button"
-              onClick={() => navigate("/profile")}
-            >
-              <img
-                src="https://pngfre.com/wp-content/uploads/1000113207.png"
-                alt="Profile"
-                className="profile-pic"
-              />
-            </button>
-          </div>
+          {/* Minimalist Profile Button */}
+          <button
+            className="pm-profile-pill font-mono"
+            onClick={() => navigate("/profile")}
+            title="Manage profile"
+          >
+            {profileAvatar ? (
+              <img src={profileAvatar} alt="" className="pm-profile-thumb" />
+            ) : (
+              <div className="pm-profile-thumb-fallback">
+                <FiUser />
+              </div>
+            )}
+            <span className="pm-profile-name">{profileName}</span>
+          </button>
+
+          {/* Mobile Menu Toggle */}
+          <button
+            className="pm-mobile-btn"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            aria-label="Toggle Menu"
+          >
+            {mobileMenuOpen ? <FiX /> : <FiMenu />}
+          </button>
         </div>
       </div>
-    </nav>
+
+      {/* Mobile Drawer */}
+      {mobileMenuOpen && (
+        <div className="pm-mobile-nav font-mono">
+          <NavLink to="/home" className="pm-mobile-item" onClick={() => setMobileMenuOpen(false)}>
+            <span className="nav-index">01</span> FEED
+          </NavLink>
+          <NavLink to="/books" className="pm-mobile-item" onClick={() => setMobileMenuOpen(false)}>
+            <span className="nav-index">02</span> BOOKS
+          </NavLink>
+          <NavLink to="/manga" className="pm-mobile-item" onClick={() => setMobileMenuOpen(false)}>
+            <span className="nav-index">03</span> MANGA
+          </NavLink>
+          <NavLink to="/profile" className="pm-mobile-item" onClick={() => setMobileMenuOpen(false)}>
+            <span className="nav-index">04</span> PROFILE [{profileName}]
+          </NavLink>
+        </div>
+      )}
+    </header>
   );
 };
 

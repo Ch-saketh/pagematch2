@@ -1,72 +1,188 @@
-.homepage-recommendations {
-  padding: 2rem 1rem;
-  background-color: #111;
-  color: white;
-}
+/* src/styles/HomepageRecommendations.css - Editorial Architectural Catalog Rows */
 
-.rec-section {
-  margin-bottom: 2rem;
-}
-
-.section-title {
-  font-size: 1.8rem;
-  font-weight: 600;
-  margin-bottom: 1rem;
-  padding-left: 0.5rem;
-  color: #fff;
-}
-
-.rec-row {
+.pm-recs-container {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 3rem var(--container-pad) 6rem;
   display: flex;
+  flex-direction: column;
+  gap: 4rem;
+}
+
+.pm-row-wrapper {
+  position: relative;
+}
+
+/* Header with Monospace Index */
+.pm-row-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.pm-row-title-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.pm-row-meta-eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  letter-spacing: var(--tracking-mono);
+}
+
+.pm-row-title {
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  font-weight: 700;
+  letter-spacing: var(--tracking-tight);
+  color: var(--text-primary);
+}
+
+.pm-row-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pm-scroll-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: all var(--transition-fast);
+}
+
+.pm-scroll-btn:hover {
+  background: var(--surface-elevated);
+  border-color: var(--border-strong);
+  color: var(--text-primary);
+}
+
+/* Carousel Track */
+.pm-carousel-track {
+  display: flex;
+  gap: 1.25rem;
   overflow-x: auto;
   scroll-behavior: smooth;
-  padding-bottom: 0.5rem;
-  gap: 1rem;
-  padding-left: 0.5rem;
-}
-
-/* Hide scrollbar */
-.rec-row::-webkit-scrollbar {
-  display: none;
-}
-.rec-row {
-  -ms-overflow-style: none;
+  padding: 4px 0 16px;
   scrollbar-width: none;
 }
 
-.rec-card {
-  min-width: 160px;
-  background-color: #1e1e1e;
-  border-radius: 12px;
+.pm-carousel-track::-webkit-scrollbar {
+  display: none;
+}
+
+/* Editorial Book Card */
+.pm-book-card {
+  flex: 0 0 210px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
   overflow: hidden;
-  transition: transform 0.3s ease;
-  flex-shrink: 0;
   cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  transition: border-color var(--transition-fast), transform var(--transition-fast);
 }
 
-.rec-card:hover {
-  transform: scale(1.08);
+.pm-book-card:hover {
+  border-color: var(--border-strong);
+  transform: translateY(-4px);
 }
 
-.rec-image {
+.pm-card-cover-wrap {
   width: 100%;
-  height: 200px;
-  background-size: cover;
-  background-position: center;
+  height: 270px;
+  position: relative;
+  background: var(--surface-subtle);
+  overflow: hidden;
 }
 
-.rec-info {
-  padding: 0.5rem;
-  text-align: center;
+.pm-card-cover {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--transition-normal);
 }
 
-.rec-info h3 {
-  font-size: 1rem;
-  margin: 0.3rem 0;
-  color: #fff;
+.pm-book-card:hover .pm-card-cover {
+  transform: scale(1.04);
 }
 
-.rec-info p {
-  font-size: 0.9rem;
-  color: #ffcc00;
+.pm-card-badge {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: var(--tracking-mono);
+  background: rgba(10, 10, 9, 0.85);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  padding: 2px 6px;
+  border-radius: 2px;
+}
+
+.pm-card-body {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.pm-card-title {
+  font-family: var(--font-display);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: var(--line-height-heading);
+  margin-bottom: 0.35rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.pm-card-meta-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: auto;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--border-subtle);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+.pm-card-rating {
+  color: var(--accent);
+  font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .pm-recs-container {
+    padding: 2rem var(--container-pad) 4rem;
+    gap: 2.5rem;
+  }
+  .pm-book-card {
+    flex: 0 0 160px;
+  }
+  .pm-card-cover-wrap {
+    height: 210px;
+  }
 }

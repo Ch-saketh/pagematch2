@@ -1,112 +1,299 @@
-/* Search Page Container */
-.search-page {
-  @apply min-h-screen bg-black text-white pt-20; /* Account for navbar */
+/* src/styles/Search.css - Editorial Search & Discovery */
+
+.pm-search-page {
+  min-height: 100vh;
+  background-color: var(--background);
+  color: var(--text-primary);
+  padding-top: 60px;
 }
 
-.search-container {
-  @apply container mx-auto px-4 py-8;
+.pm-search-container {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 3rem var(--container-pad) 6rem;
 }
 
-/* Search Header */
-.search-header {
-  @apply mb-8;
+/* Header */
+.pm-search-header {
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 1.5rem;
+  margin-bottom: 2rem;
 }
 
-.search-title {
-  @apply text-3xl font-bold mb-2;
+.pm-search-eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  letter-spacing: var(--tracking-mono);
+  margin-bottom: 0.5rem;
+  display: block;
 }
 
-.search-subtitle {
-  @apply text-gray-400;
+.pm-search-title-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
 }
 
-/* Results Grid */
-.results-grid {
-  @apply grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4;
+.pm-search-title {
+  font-family: var(--font-display);
+  font-size: var(--text-3xl);
+  font-weight: 800;
+  letter-spacing: var(--tracking-tight);
+  color: var(--text-primary);
 }
 
-/* Book Card */
-.book-card {
-  @apply relative aspect-[2/3] rounded-lg overflow-hidden bg-gray-900 shadow-lg transition-all duration-300;
+.pm-search-highlight {
+  color: var(--accent);
 }
 
-.book-card:hover {
-  @apply transform scale-105 z-10;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+.pm-search-count {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  letter-spacing: var(--tracking-mono);
 }
 
-.book-image {
-  @apply w-full h-full object-cover transition duration-300;
+/* Filters */
+.pm-search-filters {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
 }
 
-.book-card:hover .book-image {
-  @apply brightness-75;
+.pm-filter-chip {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: var(--tracking-mono);
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
 }
 
-/* Card Overlay */
-.book-overlay {
-  @apply absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent p-4 flex flex-col justify-end opacity-0 transition-opacity duration-300;
+.pm-filter-chip:hover {
+  background: var(--surface-elevated);
+  border-color: var(--border-strong);
+  color: var(--text-primary);
 }
 
-.book-card:hover .book-overlay {
-  @apply opacity-100;
+.pm-filter-chip--active {
+  background: var(--accent-subtle);
+  border-color: var(--accent);
+  color: var(--accent);
+  font-weight: 600;
 }
 
-.book-title {
-  @apply font-bold text-lg line-clamp-2;
+/* Grid */
+.pm-search-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
 }
 
-.book-rating {
-  @apply flex items-center mt-1 text-yellow-400;
+/* Card */
+.pm-search-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  transition: border-color var(--transition-fast), transform var(--transition-fast);
 }
 
-.book-genres {
-  @apply flex flex-wrap gap-1 mt-2;
+.pm-search-card:hover {
+  border-color: var(--border-strong);
+  transform: translateY(-4px);
 }
 
-.genre-tag {
-  @apply text-xs bg-gray-700/80 px-2 py-1 rounded-full;
+.pm-search-card-img-wrapper {
+  width: 100%;
+  height: 270px;
+  position: relative;
+  background: var(--surface-subtle);
+  overflow: hidden;
 }
 
-/* Loading State */
-.loading-spinner {
-  @apply w-12 h-12 border-4 border-gray-700 border-t-red-600 rounded-full animate-spin;
+.pm-search-card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--transition-normal);
 }
 
-/* Empty State */
-.empty-state {
-  @apply text-center py-20;
+.pm-search-card:hover .pm-search-card-img {
+  transform: scale(1.04);
 }
 
-.empty-icon {
-  @apply text-6xl mb-4;
+.pm-search-card-info {
+  padding: 1.1rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 }
 
-.empty-title {
-  @apply text-2xl font-bold mb-2;
+.pm-search-card-title {
+  font-family: var(--font-display);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 0.35rem;
+  line-height: var(--line-height-heading);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
-.empty-description {
-  @apply text-gray-400 max-w-md mx-auto;
+.pm-search-card-author {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-bottom: 0.8rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-/* Animations */
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+.pm-search-card-meta {
+  margin-top: auto;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--text-muted);
 }
 
-.result-animate {
-  animation: fadeIn 0.5s ease-out forwards;
+.pm-search-rating {
+  color: var(--accent);
+  font-weight: 500;
 }
 
-/* Highlight animation for search terms */
-.highlight {
-  @apply bg-yellow-400/30 px-1 rounded;
-  animation: pulse 2s infinite;
+/* Modal */
+.pm-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 10, 9, 0.88);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  padding: 1.5rem;
 }
 
-@keyframes pulse {
-  0%, 100% { background-color: rgba(255, 212, 59, 0.3); }
-  50% { background-color: rgba(255, 212, 59, 0.6); }
+.pm-modal-card {
+  width: 100%;
+  max-width: 740px;
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-pop);
+  position: relative;
+  display: flex;
+}
+
+.pm-modal-close-btn {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-sm);
+  background: var(--surface-interactive);
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  transition: all var(--transition-fast);
+}
+
+.pm-modal-close-btn:hover {
+  border-color: var(--border-strong);
+  color: #fff;
+}
+
+.pm-modal-cover-col {
+  width: 260px;
+  flex-shrink: 0;
+  background: var(--surface-subtle);
+}
+
+.pm-modal-cover-col img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.pm-modal-info-col {
+  padding: 2.2rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.pm-modal-title {
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  font-weight: 700;
+  letter-spacing: var(--tracking-tight);
+  color: var(--text-primary);
+  line-height: var(--line-height-tight);
+  margin-bottom: 0.4rem;
+  padding-right: 36px;
+}
+
+.pm-modal-author {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  letter-spacing: var(--tracking-mono);
+  margin-bottom: 1.2rem;
+}
+
+.pm-modal-desc {
+  font-size: var(--text-sm);
+  line-height: var(--line-height-normal);
+  color: var(--text-secondary);
+  margin-bottom: 2rem;
+}
+
+.pm-modal-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: auto;
+}
+
+@media (max-width: 768px) {
+  .pm-modal-card {
+    flex-direction: column;
+    max-height: 90vh;
+  }
+  .pm-modal-cover-col {
+    width: 100%;
+    height: 200px;
+  }
+  .pm-modal-info-col {
+    padding: 1.5rem;
+  }
 }
